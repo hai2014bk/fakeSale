@@ -1,0 +1,28 @@
+{
+	"expo": {
+		"sdkVersion": "20.0.0",
+		"icon": "./images/icon.png",
+		"slug": "FakeSale",
+		"loading": {
+			"hideExponentText": true,
+			"icon": "./images/loading.png",
+			"backgroundImage": "./images/launchImages/splashscreen.png"
+		},
+		"orientation": "portrait",
+		"primaryColor": "#cccccc",
+		"packagerOpts": {
+			"assetExts": ["ttf"]
+		},
+		"ios": {
+			"bundleIdentifier": "com.Farmous.Store"
+		},
+		"android": {
+			"package": "com.Farmous.Store"
+		},
+		"androidStatusBarColor": "#01cca1",
+		"androidStatusBar": {
+			"barStyle": "dark-content",
+			"backgroundColor": "#01cca1"
+		}
+	}
+}
