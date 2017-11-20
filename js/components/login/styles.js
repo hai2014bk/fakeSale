@@ -190,7 +190,7 @@ export default {
     marginLeft: 5
   },
   opacityView:{
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     flex:1,
     width:"100%",
     alignItems:'flex-start',

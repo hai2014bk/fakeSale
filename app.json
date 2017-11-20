@@ -14,10 +14,10 @@
 			"assetExts": ["ttf"]
 		},
 		"ios": {
-			"bundleIdentifier": "com.Farmous.Store"
+			"bundleIdentifier": "com.FakeSale"
 		},
 		"android": {
-			"package": "com.Farmous.Store"
+			"package": "com.FakeSale"
 		},
 		"androidStatusBarColor": "#01cca1",
 		"androidStatusBar": {

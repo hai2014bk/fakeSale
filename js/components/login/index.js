@@ -146,7 +146,7 @@ class Login extends Component {
           index: providerIndex
         });
       }
-    }, 10000);
+    }, 15000);
   }
 
   componentWillReceiveProps(props) {
@@ -908,7 +908,7 @@ class Login extends Component {
               onPress={() => dismissKeyboard()}
               style={{ color: "#696969" }}
             >
-              See what people are buying
+              See if your deal is good or not?
             </Text>
           </View>
           <Grid>
@@ -1014,7 +1014,7 @@ class Login extends Component {
           autoplay
           loop
           showsPageIndicator={false}
-          autoplayTimeout={2000}
+          autoplayTimeout={3000}
           index={0}
           pageSize={BannerWidth}
           activePageIndicatorStyle={{ backgroundColor: primary }}
