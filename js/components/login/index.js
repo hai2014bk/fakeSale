@@ -106,6 +106,7 @@ class Login extends Component {
       storeName: "",
       visible: true,
       productions: "",
+      loadProvider:true,
       titleProvider: ""
     };
   }
@@ -122,7 +123,7 @@ class Login extends Component {
 
   autoRunProvider(listProvider) {
     timer = setInterval(() => {
-      // console.log("Auto scroll", index, this.state.category.length);
+      console.log("Auto scroll");
       var providerIndex = this.state.providerIndex;
       if (providerIndex < this.state.category.length - 1) {
         providerIndex++;
@@ -157,6 +158,7 @@ class Login extends Component {
     let cateProducts = this.state.cateProducts;
     this.setState({ loadData: false, loadSubcate: false, visible: false });
     if (props.fetchAllProvider.success) {
+      if(this.state.loadProvider){
       // let test = []
       // products = products.concat(props.searchProduct.data);
       // allProvider = props.fetchAllProvider.data;
@@ -166,7 +168,8 @@ class Login extends Component {
         category: props.fetchAllProvider.data,
         listProducts: props.fetchAllProvider.data,
         chosingProvider: props.fetchAllProvider.data[0],
-        listProvider: props.fetchAllProvider.data
+        listProvider: props.fetchAllProvider.data,
+        loadProvider:false
       });
       setTimeout(() => {
         this.autoRunProvider(props.fetchAllProvider.data);
@@ -175,6 +178,7 @@ class Login extends Component {
       //   // subCategory = props.fetchCategory.data;
       //   // this.setState({ subCategory });
     }
+  }
     if (props.searchProduct.success) {
       if (this.state.searchLoadMore) {
         // for (var i in products){
@@ -249,7 +253,7 @@ class Login extends Component {
   }
   _keyExtractorSearch = (item, index) => item.detail_page;
   renderSearchSection() {
-    let render = null;
+    let render = <ActivityIndicator style={{ height: 137 }} />;
     if (this.state.products.length > 0) {
       render = (
         <FlatList
@@ -266,14 +270,44 @@ class Login extends Component {
       );
     } else {
       if (this.state.loadData) {
-        render = <Text />;
+        render = <ActivityIndicator style={{ height: 137 }} />;
       } else {
         render = <Text style={styles.alertText}>No results found</Text>;
       }
     }
     return (
       <View behavior="padding" style={{ flex: 1, flexDirection: "column" }}>
-        <View style={styles.headerSearchSection}>
+      <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+          <View style={styles.searchSectionWrap}>
+          <TouchableOpacity
+            transparent
+            onPress={() =>
+              {this.setState({ productModalVisible: false, text: "" });
+            }}
+          >
+            <Icon style={[styles.btnBack,{color:"#cecece"}]} active name="arrow-back" />
+          </TouchableOpacity>
+            <Input
+              style={{ paddingTop: 15, color: "#A9A9A9" }}
+              onChangeText={text =>
+                text.length > 2
+                  ? this.setState({ text: text })
+                  : this.setState({ text: text, searchLoadMore: true })}
+              placeholder="Search"
+              placeholderTextColor="#A9A9A9"
+              value={this.state.text}
+              onSubmitEditing={() => this.onSearch()}
+            />
+            <TouchableOpacity
+              onPress={() => this.onSearch()}
+              activeOpacity={0.7}
+              style={{ backgroundColor: "transparent" }}
+            >
+              <Icon name="ios-search" style={styles.iconSearch} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        {/* <View style={styles.headerSearchSection}>
           <TouchableOpacity
             transparent
             onPress={() =>
@@ -301,7 +335,7 @@ class Login extends Component {
               style={[styles.iconSearch, { color: "white" }]}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View style={{ flex: 1, marginTop: 10 }}>
           {render}
         </View>
@@ -311,7 +345,7 @@ class Login extends Component {
 
   renderListProducts(data) {
     let item = data.item;
-    console.log("data", item);
+    // console.log("data", item);
     let image = "";
     let icon = "";
     let provider = item.category.provider;
@@ -320,62 +354,122 @@ class Login extends Component {
     } else {
       image = "https://i.imgur.com/GN1yN2C.jpg";
     }
-    return (
-      <View style={styles.listCateView}>
-        <Image
-          source={{ uri: image }}
-          style={[styles.image, { marginRight: 5 }]}
-          resizeMode="contain"
-        />
-        <View style={{ flex: 2 }}>
-          <View style={[styles.flexRow, { alignItems: "center" }]}>
-            <Text style={styles.boldText}>Publisher: </Text>
-            <Text style={styles.publisher}>
-              {" "}{item.publisher}
-            </Text>
-          </View>
-          <Text
-            numberOfLines={3}
-            style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
-          >
-            {item.title}
-          </Text>
-          <View style={styles.flexRow}>
-            <Text style={styles.boldText}>Price: </Text>
-            <Text style={styles.price}>
-              {" "}{item.price_format}
-            </Text>
-          </View>
-          <View style={styles.flexRow}>
-            <Text style={styles.boldText}>Sale price: </Text>
-            <Text style={styles.price}>
-              {" "}{item.price_format.slice(0, 1)}
-              {item.sale_price}
-            </Text>
-          </View>
-          <View
-            style={[
-              styles.flexRow,
-              { height: 30, justifyContent: "flex-start", alignItems: "center" }
-            ]}
-          >
-            {/* <Text style={styles.boldText}>More detail: </Text> */}
+    if (item.sale_price === 0) {
+      return (
+        <View style={styles.listCateView}>
+          <Image
+            source={{ uri: image }}
+            style={[styles.image, { marginRight: 5 }]}
+            resizeMode="contain"
+          />
+          <View style={{ flex: 2 }}>
+            <View style={[styles.flexRow, { alignItems: "center" }]}>
+              <Text style={styles.boldText}>Publisher: </Text>
+              <Text style={styles.publisher}>
+                {" "}{item.publisher}
+              </Text>
+            </View>
             <Text
-              numberOfLines={1}
-              onPress={() => this.openLink(item.detail_page)}
-              style={styles.detailLink}
+              numberOfLines={3}
+              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
             >
-              More detail
+              {item.title}
             </Text>
-            <Image
-              source={this.checkprovider(item.category.provider, "icon")}
-              style={{ height: 30, width: 30, marginLeft: 10 }}
-              resizeMode="contain"
-            />
+            <View style={styles.flexRow}>
+              <Text style={styles.boldText}>Price: </Text>
+              <Text style={styles.price}>
+                {" "}{item.price_format}
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.flexRow,
+                {
+                  height: 30,
+                  justifyContent: "flex-start",
+                  alignItems: "center"
+                }
+              ]}
+            >
+              {/* <Text style={styles.boldText}>More detail: </Text> */}
+              <Text
+                numberOfLines={1}
+                onPress={() => this.openLink(item.detail_page)}
+                style={styles.detailLink}
+              >
+                More detail
+              </Text>
+              <Image
+                source={this.checkprovider(item.category.provider, "icon")}
+                style={{ height: 30, width: 30, marginLeft: 10 }}
+                resizeMode="contain"
+              />
+            </View>
           </View>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={styles.listCateView}>
+          <Image
+            source={{ uri: image }}
+            style={[styles.image, { marginRight: 5 }]}
+            resizeMode="contain"
+          />
+          <View style={{ flex: 2 }}>
+            <View style={[styles.flexRow, { alignItems: "center" }]}>
+              <Text style={styles.boldText}>Publisher: </Text>
+              <Text style={styles.publisher}>
+                {" "}{item.publisher}
+              </Text>
+            </View>
+            <Text
+              numberOfLines={3}
+              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+            >
+              {item.title}
+            </Text>
+            <View style={styles.flexRow}>
+              <Text style={styles.boldText}>Price: </Text>
+              <Text style={styles.price}>
+                {" "}{item.price_format}
+              </Text>
+            </View>
+            <View style={styles.flexRow}>
+              <Text style={styles.boldText}>Sale price: </Text>
+              <Text style={styles.price}>
+                {" "}{item.price_format.slice(0, 1)}
+                {item.sale_price}
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.flexRow,
+                {
+                  height: 30,
+                  justifyContent: "flex-start",
+                  alignItems: "center"
+                }
+              ]}
+            >
+              {/* <Text style={styles.boldText}>More detail: </Text> */}
+              <Text
+                numberOfLines={1}
+                onPress={() => this.openLink(item.detail_page)}
+                style={styles.detailLink}
+              >
+                More detail
+              </Text>
+              <Image
+                source={this.checkprovider(item.category.provider, "icon")}
+                style={{ height: 30, width: 30, marginLeft: 10 }}
+                resizeMode="contain"
+              />
+            </View>
+          </View>
+        </View>
+      );
+    }
   }
 
   checkprovider(provider, value) {
@@ -442,7 +536,8 @@ class Login extends Component {
         />
       );
     } else {
-      render = <Text style={styles.alertText}>No category has been found</Text>;
+      render = <ActivityIndicator style={{ height: 137 }} />
+      // <Text style={styles.alertText}>No category has been found</Text>;
     }
     return (
       <Modal
@@ -456,6 +551,7 @@ class Login extends Component {
             source={{ uri: this.state.storeImgurl }}
             style={styles.headerImgSubCategory}
           >
+          <View style={{backgroundColor:"rgba(0,0,0,0.1),", height: 200,width: BannerWidth,}}>
             <TouchableOpacity
               style={styles.headerBackBtn}
               onPress={() =>
@@ -465,8 +561,9 @@ class Login extends Component {
                   title: "Category"
                 })}
             >
-              <Text style={{ marginLeft: 10, color: "gray" }}>BACK</Text>
+              <Text style={{ marginLeft: 10 }}>BACK</Text>
             </TouchableOpacity>
+            </View>
           </Image>
           <View style={styles.headerBoldTextView}>
             <Text numberOfLines={1} style={styles.headerBoldText}>
@@ -576,7 +673,7 @@ class Login extends Component {
         }}
       >
         <Image
-          blurRadius={5}
+          blurRadius={3}
           source={{ uri: item.image_url }}
           resizeMode="cover"
           style={{
@@ -585,7 +682,10 @@ class Login extends Component {
           }}
         >
           <View
-            style={[styles.opacityView,{alignItems:'center',justifyContent:'center'}]}
+            style={[
+              styles.opacityView,
+              { alignItems: "center", justifyContent: "center" }
+            ]}
           >
             <Text style={{ fontSize: 35, fontWeight: "bold" }}>
               {item.provider_name}
@@ -598,7 +698,7 @@ class Login extends Component {
   }
 
   categoryPick(item, cate) {
-    console.log("categoryPick", item);
+    // console.log("categoryPick", item);
     this.setState({
       storeName: item.provider_name,
       store: item.id,
@@ -613,7 +713,8 @@ class Login extends Component {
   }
 
   onSearch() {
-    console.log("onsearch");
+    dismissKeyboard()
+    // console.log("onsearch");
     this.setState({ products: [], searchPage: 1 });
     let searchPage = 1;
     if (this.state.text == "" || this.checkSpaceAll(this.state.text)) {
@@ -677,7 +778,9 @@ class Login extends Component {
         />
       );
     } else {
-      render = <Text style={styles.alertText}>No product has been found</Text>;
+      render =
+      // <Text style={styles.alertText}>No product has been found</Text>
+      <ActivityIndicator style={{ height: 137 }} />
     }
     return (
       <Modal
@@ -763,6 +866,45 @@ class Login extends Component {
       image = "https://i.imgur.com/GN1yN2C.jpg";
     }
     // console.log("item",item);
+    if (item.sale_price===0){
+      return (
+        <View style={styles.listCateView}>
+          <Image
+            source={{ uri: image }}
+            style={[styles.image, { height: 120, marginRight: 5 }]}
+            resizeMode="contain"
+          />
+          <View style={{ flex: 2 }}>
+            <View style={[styles.flexRow, { alignItems: "center" }]}>
+              <Text style={styles.boldText}>Publisher: </Text>
+              <Text style={styles.publisher}>
+                {" "}{item.publisher}
+              </Text>
+            </View>
+            <Text
+              numberOfLines={3}
+              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+            >
+              {item.title}
+            </Text>
+            <View style={styles.flexRow}>
+              <Text style={styles.boldText}>Price: </Text>
+              <Text style={styles.price}>
+                {" "}{item.price_format}
+              </Text>
+            </View>
+            <View style={styles.flexRow}>
+              <Text
+                onPress={() => this.openLink(item.detail_page)}
+                style={styles.detailLink}
+              >
+                More detail
+              </Text>
+            </View>
+          </View>
+        </View>
+      )
+    } else {
     return (
       <View style={styles.listCateView}>
         <Image
@@ -807,7 +949,7 @@ class Login extends Component {
           </View>
         </View>
       </View>
-    );
+    )}
   }
   //______________ render list providers _________________
   renderListProvider(item, index) {
@@ -846,12 +988,12 @@ class Login extends Component {
   }
 
   handleScroll(event) {
-    console.log(event.nativeEvent.contentOffset.x, event.nativeEvent);
+    // console.log(event.nativeEvent.contentOffset.x, event.nativeEvent);
     var xOffset = event.nativeEvent.contentOffset.x;
     var chosingIndex = 0;
     chosingIndex = parseInt(xOffset / 200);
     if (chosingIndex == this.state.providerIndex) {
-      console.log("2sadsa");
+      // console.log("2sadsa");
     } else {
       clearInterval(timer);
       chosingProvider = this.state.listProvider[chosingIndex];
@@ -900,7 +1042,12 @@ class Login extends Component {
           <View style={{ marginTop: 0, paddingLeft: 20 }}>
             <Text
               onPress={() => dismissKeyboard()}
-              style={{marginTop:10, color: "black", fontSize: 25, fontWeight: "bold" }}
+              style={{
+                marginTop: 10,
+                color: "black",
+                fontSize: 25,
+                fontWeight: "bold"
+              }}
             >
               Fake Sale
             </Text>
@@ -962,7 +1109,8 @@ class Login extends Component {
                       color: "black",
                       fontSize: 20,
                       fontWeight: "bold",
-                      marginLeft: 5
+                      paddingLeft:15,
+                      // marginLeft: 5
                     }}
                   >
                     {chosingProvider.provider_name}
@@ -992,7 +1140,7 @@ class Login extends Component {
         {this.renderCateProductModal()}
         {/* render product of search*/}
         {this.renderProductModal()}
-        {/* <Spinner visible={this.state.visible} /> */}
+        <Spinner visible={this.state.visible} />
       </Container>
     );
   }
@@ -1027,79 +1175,141 @@ class Login extends Component {
     }
     return (
       <View style={{ flex: 1, height: 137 }} style={styles.slide1}>
-        <Text note> No product to show</Text>
-        {/* <ActivityIndicator style={{ height: 137 }} /> */}
+        {/* <Text note> No product to show</Text> */}
+        <ActivityIndicator style={{ height: 137 }} />
       </View>
     );
   }
   test() {}
   autoscrollProduct(item, index) {
-    return (
-      <View key={index} style={{ marginLeft: 10, marginRight: 10 }}>
-        <View style={[styles.listCateView, { borderBottomWidth: 0 }]}>
-          <Image
-            source={{ uri: item.medium_image }}
-            style={[styles.image, { marginLeft: 5, marginRight: 5 }]}
-            resizeMode="contain"
-          />
-          <View style={{ flex: 2 }}>
-            <View
-              style={[
-                styles.flexRow,
-                { marginRight: 10, alignItems: "center", flex: 1 }
-              ]}
-            >
-              <Text style={styles.boldText}>Publisher: </Text>
-              <Text style={styles.publisher}>
-                {" "}{item.publisher}
-              </Text>
-            </View>
-            <Text
-              numberOfLines={2}
-              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
-            >
-              {item.title}
-            </Text>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>Price: </Text>
-              <Text style={styles.price}>
-                {" "}{item.price_format}
-              </Text>
-            </View>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>Sale price: </Text>
-              <Text style={styles.price}>
-                {" "}{item.price_format.slice(0, 1)}
-                {item.sale_price}
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.flexRow,
-                {
-                  height: 30,
-                  justifyContent: "flex-start",
-                  alignItems: "center"
-                }
-              ]}
-            >
-              <Text
-                numberOfLines={1}
-                onPress={() => this.openLink(item.detail_page)}
-                style={styles.detailLink}
+    if (item.sale_price === 0) {
+      return (
+        <View key={index} style={{ marginLeft: 10, marginRight: 10 }}>
+          <View style={[styles.listCateView, { borderBottomWidth: 0 }]}>
+            <Image
+              source={{ uri: item.medium_image }}
+              style={[styles.image, { marginLeft: 5, marginRight: 5 }]}
+              resizeMode="contain"
+            />
+            <View style={{ flex: 2 }}>
+              <View
+                style={[
+                  styles.flexRow,
+                  { marginRight: 10, alignItems: "center", flex: 1 }
+                ]}
               >
-                More detail
+                <Text style={styles.boldText}>Publisher: </Text>
+                <Text style={styles.publisher}>
+                  {" "}{item.publisher}
+                </Text>
+              </View>
+              <Text
+                numberOfLines={2}
+                style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+              >
+                {item.title}
               </Text>
-              <Image
-                source={this.checkprovider(item.params, "icon")}
-                style={{ height: 30, width: 30, marginLeft: 10 }}
-                resizeMode="contain"
-              />
+              <View style={styles.flexRow}>
+                <Text style={styles.boldText}>Price: </Text>
+                <Text style={styles.price}>
+                  {" "}{item.price_format}
+                </Text>
+              </View>
+              <View
+                style={[
+                  styles.flexRow,
+                  {
+                    height: 30,
+                    justifyContent: "flex-start",
+                    alignItems: "center"
+                  }
+                ]}
+              >
+                <Text
+                  numberOfLines={1}
+                  onPress={() => this.openLink(item.detail_page)}
+                  style={styles.detailLink}
+                >
+                  More detail
+                </Text>
+                <Image
+                  source={this.checkprovider(item.params, "icon")}
+                  style={{ height: 30, width: 30, marginLeft: 10 }}
+                  resizeMode="contain"
+                />
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View key={index} style={{ marginLeft: 10, marginRight: 10 }}>
+          <View style={[styles.listCateView, { borderBottomWidth: 0 }]}>
+            <Image
+              source={{ uri: item.medium_image }}
+              style={[styles.image, { marginLeft: 5, marginRight: 5 }]}
+              resizeMode="contain"
+            />
+            <View style={{ flex: 2 }}>
+              <View
+                style={[
+                  styles.flexRow,
+                  { marginRight: 10, alignItems: "center", flex: 1 }
+                ]}
+              >
+                <Text style={styles.boldText}>Publisher: </Text>
+                <Text style={styles.publisher}>
+                  {" "}{item.publisher}
+                </Text>
+              </View>
+              <Text
+                numberOfLines={2}
+                style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+              >
+                {item.title}
+              </Text>
+              <View style={styles.flexRow}>
+                <Text style={styles.boldText}>Price: </Text>
+                <Text style={styles.price}>
+                  {" "}{item.price_format}
+                </Text>
+              </View>
+              <View style={styles.flexRow}>
+                <Text style={styles.boldText}>Sale price: </Text>
+                <Text style={styles.price}>
+                  {" "}{item.price_format.slice(0, 1)}
+                  {item.sale_price}
+                </Text>
+              </View>
+              <View
+                style={[
+                  styles.flexRow,
+                  {
+                    height: 30,
+                    justifyContent: "flex-start",
+                    alignItems: "center"
+                  }
+                ]}
+              >
+                <Text
+                  numberOfLines={1}
+                  onPress={() => this.openLink(item.detail_page)}
+                  style={styles.detailLink}
+                >
+                  More detail
+                </Text>
+                <Image
+                  source={this.checkprovider(item.params, "icon")}
+                  style={{ height: 30, width: 30, marginLeft: 10 }}
+                  resizeMode="contain"
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      );
+    }
   }
   checkSpaceAll(text) {
     if (!text.replace(/\s/g, "").length) {
