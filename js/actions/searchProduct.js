@@ -16,7 +16,7 @@ export function searchProductFailed(error) {
 }
 
 export function searchProduct(params) {
-	console.log("qweqweqw")
+	console.log("qweqweqw", params)
 	let url = mConstants.BASE_URL + 'search/?page=' + params.page 
 	return dispatch => {
 		APIRequest.APIRequestPOST(url,params, false,
