@@ -12,7 +12,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import {
   Icon,
@@ -106,7 +106,7 @@ class Login extends Component {
       storeName: "",
       visible: true,
       productions: "",
-      loadProvider:true,
+      loadProvider: true,
       titleProvider: ""
     };
   }
@@ -158,27 +158,27 @@ class Login extends Component {
     let cateProducts = this.state.cateProducts;
     this.setState({ loadData: false, loadSubcate: false, visible: false });
     if (props.fetchAllProvider.success) {
-      if(this.state.loadProvider){
-      // let test = []
-      // products = products.concat(props.searchProduct.data);
-      // allProvider = props.fetchAllProvider.data;
-      // allProvider = allProvider.concat(test);
-      // this.setState({ category: allProvider });
-      this.setState({
-        category: props.fetchAllProvider.data,
-        listProducts: props.fetchAllProvider.data,
-        chosingProvider: props.fetchAllProvider.data[0],
-        listProvider: props.fetchAllProvider.data,
-        loadProvider:false
-      });
-      setTimeout(() => {
-        this.autoRunProvider(props.fetchAllProvider.data);
-      }, 2000);
-      // console.log("props.fetchAllProvider");
-      //   // subCategory = props.fetchCategory.data;
-      //   // this.setState({ subCategory });
+      if (this.state.loadProvider) {
+        // let test = []
+        // products = products.concat(props.searchProduct.data);
+        // allProvider = props.fetchAllProvider.data;
+        // allProvider = allProvider.concat(test);
+        // this.setState({ category: allProvider });
+        this.setState({
+          category: props.fetchAllProvider.data,
+          listProducts: props.fetchAllProvider.data,
+          chosingProvider: props.fetchAllProvider.data[0],
+          listProvider: props.fetchAllProvider.data,
+          loadProvider: false
+        });
+        setTimeout(() => {
+          this.autoRunProvider(props.fetchAllProvider.data);
+        }, 2000);
+        // console.log("props.fetchAllProvider");
+        //   // subCategory = props.fetchCategory.data;
+        //   // this.setState({ subCategory });
+      }
     }
-  }
     if (props.searchProduct.success) {
       if (this.state.searchLoadMore) {
         // for (var i in products){
@@ -277,16 +277,20 @@ class Login extends Component {
     }
     return (
       <View behavior="padding" style={{ flex: 1, flexDirection: "column" }}>
-      <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           <View style={styles.searchSectionWrap}>
-          <TouchableOpacity
-            transparent
-            onPress={() =>
-              {this.setState({ productModalVisible: false, text: "" });
-            }}
-          >
-            <Icon style={[styles.btnBack,{color:"#cecece"}]} active name="arrow-back" />
-          </TouchableOpacity>
+            <TouchableOpacity
+              transparent
+              onPress={() => {
+                this.setState({ productModalVisible: false, text: "" });
+              }}
+            >
+              <Icon
+                style={[styles.btnBack, { color: "#cecece" }]}
+                active
+                name="arrow-back"
+              />
+            </TouchableOpacity>
             <Input
               style={{ paddingTop: 15, color: "#A9A9A9" }}
               onChangeText={text =>
@@ -536,7 +540,7 @@ class Login extends Component {
         />
       );
     } else {
-      render = <ActivityIndicator style={{ height: 137 }} />
+      render = <ActivityIndicator style={{ height: 137 }} />;
       // <Text style={styles.alertText}>No category has been found</Text>;
     }
     return (
@@ -551,18 +555,24 @@ class Login extends Component {
             source={{ uri: this.state.storeImgurl }}
             style={styles.headerImgSubCategory}
           >
-          <View style={{backgroundColor:"rgba(0,0,0,0.1),", height: 200,width: BannerWidth,}}>
-            <TouchableOpacity
-              style={styles.headerBackBtn}
-              onPress={() =>
-                this.setState({
-                  subCateModalVisible: false,
-                  cateModalVisible: this.state.cate ? true : false,
-                  title: "Category"
-                })}
+            <View
+              style={{
+                backgroundColor: "rgba(0,0,0,0.1),",
+                height: 200,
+                width: BannerWidth
+              }}
             >
-              <Text style={{ marginLeft: 10 }}>BACK</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.headerBackBtn}
+                onPress={() =>
+                  this.setState({
+                    subCateModalVisible: false,
+                    cateModalVisible: this.state.cate ? true : false,
+                    title: "Category"
+                  })}
+              >
+                <Text style={{ marginLeft: 10 }}>BACK</Text>
+              </TouchableOpacity>
             </View>
           </Image>
           <View style={styles.headerBoldTextView}>
@@ -713,7 +723,7 @@ class Login extends Component {
   }
 
   onSearch() {
-    dismissKeyboard()
+    Keyboard.dismiss;
     // console.log("onsearch");
     this.setState({ products: [], searchPage: 1 });
     let searchPage = 1;
@@ -778,9 +788,10 @@ class Login extends Component {
         />
       );
     } else {
-      render =
-      // <Text style={styles.alertText}>No product has been found</Text>
-      <ActivityIndicator style={{ height: 137 }} />
+      render = (
+        // <Text style={styles.alertText}>No product has been found</Text>
+        <ActivityIndicator style={{ height: 137 }} />
+      );
     }
     return (
       <Modal
@@ -866,7 +877,7 @@ class Login extends Component {
       image = "https://i.imgur.com/GN1yN2C.jpg";
     }
     // console.log("item",item);
-    if (item.sale_price===0){
+    if (item.sale_price === 0) {
       return (
         <View style={styles.listCateView}>
           <Image
@@ -903,53 +914,54 @@ class Login extends Component {
             </View>
           </View>
         </View>
-      )
+      );
     } else {
-    return (
-      <View style={styles.listCateView}>
-        <Image
-          source={{ uri: image }}
-          style={[styles.image, { height: 120, marginRight: 5 }]}
-          resizeMode="contain"
-        />
-        <View style={{ flex: 2 }}>
-          <View style={[styles.flexRow, { alignItems: "center" }]}>
-            <Text style={styles.boldText}>Publisher: </Text>
-            <Text style={styles.publisher}>
-              {" "}{item.publisher}
-            </Text>
-          </View>
-          <Text
-            numberOfLines={3}
-            style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
-          >
-            {item.title}
-          </Text>
-          <View style={styles.flexRow}>
-            <Text style={styles.boldText}>Price: </Text>
-            <Text style={styles.price}>
-              {" "}{item.price_format}
-            </Text>
-          </View>
-          <View style={styles.flexRow}>
-            <Text style={styles.boldText}>Sale price: </Text>
-            <Text style={styles.price}>
-              {" "}{item.price_format.slice(0, 1)}
-              {item.sale_price}
-            </Text>
-          </View>
-          <View style={styles.flexRow}>
-            {/* <Text style={styles.boldText}>Detail and Buy: </Text> */}
+      return (
+        <View style={styles.listCateView}>
+          <Image
+            source={{ uri: image }}
+            style={[styles.image, { height: 120, marginRight: 5 }]}
+            resizeMode="contain"
+          />
+          <View style={{ flex: 2 }}>
+            <View style={[styles.flexRow, { alignItems: "center" }]}>
+              <Text style={styles.boldText}>Publisher: </Text>
+              <Text style={styles.publisher}>
+                {" "}{item.publisher}
+              </Text>
+            </View>
             <Text
-              onPress={() => this.openLink(item.detail_page)}
-              style={styles.detailLink}
+              numberOfLines={3}
+              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
             >
-              More detail
+              {item.title}
             </Text>
+            <View style={styles.flexRow}>
+              <Text style={styles.boldText}>Price: </Text>
+              <Text style={styles.price}>
+                {" "}{item.price_format}
+              </Text>
+            </View>
+            <View style={styles.flexRow}>
+              <Text style={styles.boldText}>Sale price: </Text>
+              <Text style={styles.price}>
+                {" "}{item.price_format.slice(0, 1)}
+                {item.sale_price}
+              </Text>
+            </View>
+            <View style={styles.flexRow}>
+              {/* <Text style={styles.boldText}>Detail and Buy: </Text> */}
+              <Text
+                onPress={() => this.openLink(item.detail_page)}
+                style={styles.detailLink}
+              >
+                More detail
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-    )}
+      );
+    }
   }
   //______________ render list providers _________________
   renderListProvider(item, index) {
@@ -1109,7 +1121,7 @@ class Login extends Component {
                       color: "black",
                       fontSize: 20,
                       fontWeight: "bold",
-                      paddingLeft:15,
+                      paddingLeft: 15
                       // marginLeft: 5
                     }}
                   >
