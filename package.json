@@ -1,5 +1,5 @@
 {
-  "name": "FakeSale",
+  "name": "fakesale",
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
