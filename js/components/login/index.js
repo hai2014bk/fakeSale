@@ -12,7 +12,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import {
   Icon,
@@ -151,7 +151,7 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(props) {
-    // console.log("________________________________",props)
+    console.log("props");
     // let category = this.state.category;
     let products = this.state.products;
     let subCategory = [];
@@ -253,7 +253,7 @@ class Login extends Component {
   }
   _keyExtractorSearch = (item, index) => item.detail_page;
   renderSearchSection() {
-    let render = <ActivityIndicator style={{ height: 137 }} />;
+    let render = null;
     if (this.state.products.length > 0) {
       render = (
         <FlatList
@@ -272,15 +272,15 @@ class Login extends Component {
       if (this.state.loadData) {
         render = <ActivityIndicator style={{ height: 137 }} />;
       } else {
+        //123456789
         render = <Text style={styles.alertText}>No results found</Text>;
       }
     }
     return (
-      <View behavior="padding" style={{ flex: 1, flexDirection: "column" }}>
+      <View style={{ flex: 1, flexDirection: "column", marginTop: 5 }}>
         <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           <View style={styles.searchSectionWrap}>
             <TouchableOpacity
-              transparent
               onPress={() => {
                 this.setState({ productModalVisible: false, text: "" });
               }}
@@ -292,54 +292,37 @@ class Login extends Component {
               />
             </TouchableOpacity>
             <Input
+              {...this.props}
+              ref={ref => {
+                this.search = ref;
+              }}
               style={{ paddingTop: 15, color: "#A9A9A9" }}
-              onChangeText={text =>
-                text.length > 2
-                  ? this.setState({ text: text })
-                  : this.setState({ text: text, searchLoadMore: true })}
+              onChangeText={text => {
+                console.log(text);
+                // text.length > 2
+                //   ? this.setState({ text: text })
+                this.setState({ text: text, searchLoadMore: true });
+              }}
               placeholder="Search"
+              blurOnSubmit={false}
+              autoFocus={false}
+              autoCorrect={false}
               placeholderTextColor="#A9A9A9"
               value={this.state.text}
-              onSubmitEditing={() => this.onSearch()}
+              onSubmitEditing={() => {
+                this.onSearch();
+              }}
             />
             <TouchableOpacity
-              onPress={() => this.onSearch()}
-              activeOpacity={0.7}
-              style={{ backgroundColor: "transparent" }}
+              onPress={() => {
+                this.onSearch();
+              }}
+              activeOpacity={0.1}
             >
               <Icon name="ios-search" style={styles.iconSearch} />
             </TouchableOpacity>
           </View>
         </View>
-        {/* <View style={styles.headerSearchSection}>
-          <TouchableOpacity
-            transparent
-            onPress={() =>
-              this.setState({ productModalVisible: false, text: "" })}
-          >
-            <Icon style={styles.btnBack} active name="arrow-back" />
-          </TouchableOpacity>
-          <View style={styles.searchSectionModal}>
-            <Input
-              style={{ color: "#A9A9A9" }}
-              onSubmitEditing={() => this.onSearch()}
-              returnKeyType="done"
-              onChangeText={text =>
-                text.length > 2
-                  ? this.setState({ text: text })
-                  : this.setState({ text: text, searchLoadMore: true })}
-              placeholder="Search"
-              placeholderTextColor="#A9A9A9"
-              value={this.state.text}
-            />
-          </View>
-          <TouchableOpacity onPress={() => this.onSearch()} activeOpacity={0.7}>
-            <Icon
-              name="ios-search"
-              style={[styles.iconSearch, { color: "white" }]}
-            />
-          </TouchableOpacity>
-        </View> */}
         <View style={{ flex: 1, marginTop: 10 }}>
           {render}
         </View>
@@ -540,8 +523,13 @@ class Login extends Component {
         />
       );
     } else {
-      render = <ActivityIndicator style={{ height: 137 }} />;
-      // <Text style={styles.alertText}>No category has been found</Text>;
+      if (this.state.loadData) {
+        render = <ActivityIndicator style={{ height: 137 }} />;
+      } else {
+        render = (
+          <Text style={styles.alertText}>No category has been found</Text>
+        );
+      }
     }
     return (
       <Modal
@@ -618,7 +606,8 @@ class Login extends Component {
       cateProducts: [],
       cantLoadMore: false,
       page: 1,
-      subTitleproduct: item.provider
+      subTitleproduct: item.provider,
+      loadData: true
     });
     this.props.fetchProducts(params);
   }
@@ -710,6 +699,7 @@ class Login extends Component {
   categoryPick(item, cate) {
     // console.log("categoryPick", item);
     this.setState({
+      loadData: true,
       storeName: item.provider_name,
       store: item.id,
       storeImgurl: item.image_url,
@@ -723,17 +713,15 @@ class Login extends Component {
   }
 
   onSearch() {
-    Keyboard.dismiss;
+    Keyboard.dismiss();
+    dismissKeyboard();
     // console.log("onsearch");
     this.setState({ products: [], searchPage: 1 });
     let searchPage = 1;
-    if (this.state.text == "" || this.checkSpaceAll(this.state.text)) {
-      Alert.alert("", "Search field cannot be blank");
-      this.setState({ text: "" });
-    } else {
-      if (this.state.text.length < 3) {
-        Alert.alert("", "Search field must has more than 3 characters");
-      } else {
+    if (this.state.text !== "" || !this.checkSpaceAll(this.state.text)) {
+      console.log("search1");
+      if (this.state.text.length >= 3) {
+        console.log("search2");
         this.setState({
           productModalVisible: true,
           products: [],
@@ -743,8 +731,47 @@ class Login extends Component {
         params.keyword = this.state.text.trim();
         params.page = searchPage;
         this.props.search(params);
+      } else {
+        console.log("search3");
+        Alert.alert("", "Search field must has more than 3 characters");
       }
+    } else {
+      console.log("search4");
+      Alert.alert("", "Search field cannot be blank", [
+        {
+          text: "OK",
+          onPress: () => {
+            console.log("Press")
+            this.search._root.setNativeProps({ text: "" });
+            this.search._root.focus();
+          }
+        }
+      ]);
+      this.setState({ text: "" });
     }
+    // if (this.state.text === "" || this.checkSpaceAll(this.state.text)) {
+    //   Alert.alert("", "Search field cannot be blank",
+    //   [
+    //     // {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+    //     // {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+    //     {text: 'OK', onPress: () => Keyboard.dismiss},
+    //   ]);
+    //   this.setState({ text: "" });
+    // } else {
+    //   if (this.state.text.length < 3) {
+    //     Alert.alert("", "Search field must has more than 3 characters");
+    //   } else {
+    //     this.setState({
+    //       productModalVisible: true,
+    //       products: [],
+    //       loadData: true
+    //     });
+    //     let params = {};
+    //     params.keyword = this.state.text.trim();
+    //     params.page = searchPage;
+    //     this.props.search(params);
+    //   }
+    // }
   }
 
   cateProductLoadMore() {
@@ -788,10 +815,12 @@ class Login extends Component {
         />
       );
     } else {
-      render = (
-        // <Text style={styles.alertText}>No product has been found</Text>
-        <ActivityIndicator style={{ height: 137 }} />
-      );
+      if (this.state.loadData) {
+        render = <ActivityIndicator style={{ height: 137 }} />;
+      } else
+        render = (
+          <Text style={styles.alertText}>No product has been found</Text>
+        );
     }
     return (
       <Modal
@@ -1035,7 +1064,10 @@ class Login extends Component {
           <View style={styles.searchSectionWrap}>
             <Input
               style={{ paddingTop: 15, color: "#A9A9A9" }}
-              onChangeText={text => this.setState({ text: text })}
+              onChangeText={text => {
+                console.log(text);
+                this.setState({ text: text });
+              }}
               placeholder="What do you want to buy..."
               placeholderTextColor="#A9A9A9"
               value={this.state.text}
@@ -1043,7 +1075,7 @@ class Login extends Component {
             />
             <TouchableOpacity
               onPress={() => this.onSearch()}
-              activeOpacity={0.7}
+              activeOpacity={0.1}
               style={{ backgroundColor: "transparent" }}
             >
               <Icon name="ios-search" style={styles.iconSearch} />
