@@ -257,5 +257,17 @@ export default {
     flexDirection: "row",
     marginLeft:10,
     marginRight:10
+  },
+  provNameText:{
+    color: "black",
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 15
+  },
+  bigTextHeader:{
+    marginTop: 10,
+    color: "black",
+    fontSize: 25,
+    fontWeight: "bold"
   }
 };

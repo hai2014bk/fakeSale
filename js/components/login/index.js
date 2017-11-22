@@ -159,11 +159,6 @@ class Login extends Component {
     this.setState({ loadData: false, loadSubcate: false, visible: false });
     if (props.fetchAllProvider.success) {
       if (this.state.loadProvider) {
-        // let test = []
-        // products = products.concat(props.searchProduct.data);
-        // allProvider = props.fetchAllProvider.data;
-        // allProvider = allProvider.concat(test);
-        // this.setState({ category: allProvider });
         this.setState({
           category: props.fetchAllProvider.data,
           listProducts: props.fetchAllProvider.data,
@@ -174,25 +169,12 @@ class Login extends Component {
         setTimeout(() => {
           this.autoRunProvider(props.fetchAllProvider.data);
         }, 2000);
-        // console.log("props.fetchAllProvider");
-        //   // subCategory = props.fetchCategory.data;
-        //   // this.setState({ subCategory });
       }
     }
     if (props.searchProduct.success) {
       if (this.state.searchLoadMore) {
-        // for (var i in products){
-        //   for (var j in props.searchProduct.data){
-        //     if(props.searchProduct.data[j].id===products[i].id){
-        //     } else {
-        //       products = products.push(props.searchProduct.data[j].id)
-        //     }
-        //   }
-        // // }
-        // console.log("products",products)
         products = products.concat(props.searchProduct.data);
         this.setState({ products, searchLoadMore: false });
-        // console.log("products",this.state.products)
       } else {
         this.setState({ products: props.searchProduct.data });
       }
@@ -204,7 +186,6 @@ class Login extends Component {
     }
 
     if (props.fetchCategoryProducts.success) {
-      // console.log('length', props.fetchCategoryProducts.data.length)
       if (this.state.isLoadMore) {
         if (props.fetchCategoryProducts.data.length < 10) {
           cateProducts = cateProducts.concat(props.fetchCategoryProducts.data);
@@ -225,7 +206,137 @@ class Login extends Component {
         this.setState({ cateProducts: props.fetchCategoryProducts.data });
       }
     }
-    // console.log("this.state.subCategory",this.state.subCategory)
+  }
+
+  render() {
+    chosingProvider = this.state.chosingProvider;
+    return (
+      <Container
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+          flexDirection: "column",
+          paddingTop: Platform === "ios" ? 20 : 5
+        }}
+      >
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+          <View style={styles.searchSectionWrap}>
+            <Input
+              {...this.props}
+              ref={ref => {
+                this.search = ref;
+              }}
+              style={{ paddingTop: 15, color: "#A9A9A9" }}
+              onChangeText={text => {
+                // console.log(text);
+                this.setState({ text: text });
+              }}
+              placeholder="What do you want to buy..."
+              placeholderTextColor="#A9A9A9"
+              value={this.state.text}
+              onSubmitEditing={() => this.onSearch()}
+            />
+            <TouchableOpacity
+              onPress={() => this.onSearch()}
+              activeOpacity={0.1}
+              style={{ backgroundColor: "transparent" }}
+            >
+              <Icon name="ios-search" style={styles.iconSearch} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Content>
+          <View style={{ marginTop: 0, paddingLeft: 20 }}>
+            <Text
+              onPress={() => dismissKeyboard()}
+              style={styles.bigTextHeader}
+            >
+              Fake Sale
+            </Text>
+            <Text
+              onPress={() => dismissKeyboard()}
+              style={{ color: "#696969" }}
+            >
+              See if your deal is good or not?
+            </Text>
+          </View>
+          <Grid>
+            <Row size={1}>
+              <View>
+                <FlatList
+                  ref={ref => {
+                    this.listProvider = ref;
+                  }}
+                  data={this.state.category}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  bounces={false}
+                  scrollEventThrottle={400}
+                  onScroll={e => {
+                    this.handleScroll(e);
+                  }}
+                  onMomentumScrollBegin={e => {}}
+                  //   onMomentumScrollEnd={(event) => {
+                  //     // scroll animation ended
+                  //     console.log(event.nativeEvent.contentOffset.x);
+                  //     console.log(event.nativeEvent.contentOffset.y);
+                  //  }}
+                  getItemLayout={(data, index) => ({
+                    length: 200,
+                    offset: 200 * index,
+                    index
+                  })}
+                  renderItem={({ item, index }) =>
+                    <View style={{ marginTop: 20 }}>
+                      {this.renderListProvider(item, index)}
+                    </View>}
+                  // onScroll={()=>console.log(22112)}
+                  // renderItem={( item, index) =>
+                  //   <View style={{ marginTop: 20 }}>
+                  //     {this.renderListProvider(item, index)}
+                  //   </View>}
+                />
+              </View>
+            </Row>
+            <Row size={2}>
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    justifyContent: "space-between",
+                    flexDirection: "row"
+                  }}
+                >
+                  <Text style={styles.provNameText}>
+                    {chosingProvider.provider_name}
+                  </Text>
+                  <TouchableOpacity
+                    style={{ marginRight: 5 }}
+                    onPress={() => {
+                      this.setState({
+                        cateModalVisible: true,
+                        title: "CATEGORY"
+                      });
+                    }}
+                  >
+                    <Text style={{ color: "black" }}>MORE</Text>
+                  </TouchableOpacity>
+                </View>
+                {this.productions()}
+              </View>
+            </Row>
+          </Grid>
+        </Content>
+        {/* render site*/}
+        {this.renderCategoryModal()}
+        {/* render category in a site*/}
+        {this.renderSubCategoryModal()}
+        {/* render product of category in a site*/}
+        {this.renderCateProductModal()}
+        {/* render product of search*/}
+        {this.renderProductModal()}
+        <Spinner visible={this.state.visible} />
+      </Container>
+    );
   }
 
   _keyExtractor = (item, index) => item.id;
@@ -732,16 +843,22 @@ class Login extends Component {
         params.page = searchPage;
         this.props.search(params);
       } else {
-        console.log("search3");
-        Alert.alert("", "Search field must has more than 3 characters");
+        Alert.alert("", "Search field must has more than 3 characters", [
+          {
+            text: "OK",
+            onPress: () => {
+              console.log("Press");
+              this.search._root.focus();
+            }
+          }
+        ]);
       }
     } else {
-      console.log("search4");
       Alert.alert("", "Search field cannot be blank", [
         {
           text: "OK",
           onPress: () => {
-            console.log("Press")
+            console.log("Press");
             this.search._root.setNativeProps({ text: "" });
             this.search._root.focus();
           }
@@ -749,29 +866,6 @@ class Login extends Component {
       ]);
       this.setState({ text: "" });
     }
-    // if (this.state.text === "" || this.checkSpaceAll(this.state.text)) {
-    //   Alert.alert("", "Search field cannot be blank",
-    //   [
-    //     // {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-    //     // {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-    //     {text: 'OK', onPress: () => Keyboard.dismiss},
-    //   ]);
-    //   this.setState({ text: "" });
-    // } else {
-    //   if (this.state.text.length < 3) {
-    //     Alert.alert("", "Search field must has more than 3 characters");
-    //   } else {
-    //     this.setState({
-    //       productModalVisible: true,
-    //       products: [],
-    //       loadData: true
-    //     });
-    //     let params = {};
-    //     params.keyword = this.state.text.trim();
-    //     params.page = searchPage;
-    //     this.props.search(params);
-    //   }
-    // }
   }
 
   cateProductLoadMore() {
@@ -1048,145 +1142,6 @@ class Login extends Component {
   }
   onScrollBegin() {
     clearInterval(timer);
-  }
-  render() {
-    chosingProvider = this.state.chosingProvider;
-    return (
-      <Container
-        style={{
-          flex: 1,
-          backgroundColor: "white",
-          flexDirection: "column",
-          paddingTop: Platform === "ios" ? 20 : 5
-        }}
-      >
-        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-          <View style={styles.searchSectionWrap}>
-            <Input
-              style={{ paddingTop: 15, color: "#A9A9A9" }}
-              onChangeText={text => {
-                console.log(text);
-                this.setState({ text: text });
-              }}
-              placeholder="What do you want to buy..."
-              placeholderTextColor="#A9A9A9"
-              value={this.state.text}
-              onSubmitEditing={() => this.onSearch()}
-            />
-            <TouchableOpacity
-              onPress={() => this.onSearch()}
-              activeOpacity={0.1}
-              style={{ backgroundColor: "transparent" }}
-            >
-              <Icon name="ios-search" style={styles.iconSearch} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <Content>
-          <View style={{ marginTop: 0, paddingLeft: 20 }}>
-            <Text
-              onPress={() => dismissKeyboard()}
-              style={{
-                marginTop: 10,
-                color: "black",
-                fontSize: 25,
-                fontWeight: "bold"
-              }}
-            >
-              Fake Sale
-            </Text>
-            <Text
-              onPress={() => dismissKeyboard()}
-              style={{ color: "#696969" }}
-            >
-              See if your deal is good or not?
-            </Text>
-          </View>
-          <Grid>
-            <Row size={1}>
-              <View>
-                <FlatList
-                  ref={ref => {
-                    this.listProvider = ref;
-                  }}
-                  data={this.state.category}
-                  keyExtractor={item => item.id}
-                  horizontal
-                  bounces={false}
-                  scrollEventThrottle={400}
-                  onScroll={e => {
-                    this.handleScroll(e);
-                  }}
-                  onMomentumScrollBegin={e => {}}
-                  //   onMomentumScrollEnd={(event) => {
-                  //     // scroll animation ended
-                  //     console.log(event.nativeEvent.contentOffset.x);
-                  //     console.log(event.nativeEvent.contentOffset.y);
-                  //  }}
-                  getItemLayout={(data, index) => ({
-                    length: 200,
-                    offset: 200 * index,
-                    index
-                  })}
-                  renderItem={({ item, index }) =>
-                    <View style={{ marginTop: 20 }}>
-                      {this.renderListProvider(item, index)}
-                    </View>}
-                  // onScroll={()=>console.log(22112)}
-                  // renderItem={( item, index) =>
-                  //   <View style={{ marginTop: 20 }}>
-                  //     {this.renderListProvider(item, index)}
-                  //   </View>}
-                />
-              </View>
-            </Row>
-            <Row size={2}>
-              <View style={{ flex: 1 }}>
-                <View
-                  style={{
-                    justifyContent: "space-between",
-                    flexDirection: "row"
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "black",
-                      fontSize: 20,
-                      fontWeight: "bold",
-                      paddingLeft: 15
-                      // marginLeft: 5
-                    }}
-                  >
-                    {chosingProvider.provider_name}
-                  </Text>
-                  <TouchableOpacity
-                    style={{ marginRight: 5 }}
-                    onPress={() => {
-                      this.setState({
-                        cateModalVisible: true,
-                        title: "CATEGORY"
-                      });
-                    }}
-                  >
-                    <Text style={{ color: "black" }}>MORE</Text>
-                  </TouchableOpacity>
-                </View>
-                {this.productions()}
-              </View>
-            </Row>
-          </Grid>
-        </Content>
-        {/* render site*/}
-        {this.renderCategoryModal()}
-        {/* render category in a site*/}
-        {this.renderSubCategoryModal()}
-        {/* render product of category in a site*/}
-        {this.renderCateProductModal()}
-        {/* render product of search*/}
-        {this.renderProductModal()}
-        <Spinner visible={this.state.visible} />
-      </Container>
-    );
   }
   productions() {
     let production = [];
