@@ -20,7 +20,7 @@ export function fetchCategory(params) {
 		return dispatch => {
 		APIRequest.APIRequestGET(url, false,
 			response => {
-				console.log(response)
+				console.log("response")
 				dispatch(fetchCategorySuccess(response));
 			},
 			error => {
