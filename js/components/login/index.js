@@ -123,7 +123,7 @@ class Login extends Component {
 
   autoRunProvider(listProvider) {
     timer = setInterval(() => {
-      console.log("Auto scroll");
+      // console.log("Auto scroll");
       var providerIndex = this.state.providerIndex;
       if (providerIndex < this.state.category.length - 1) {
         providerIndex++;
@@ -151,7 +151,7 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log("props");
+    // console.log("props");
     // let category = this.state.category;
     let products = this.state.products;
     let subCategory = [];
@@ -209,6 +209,7 @@ class Login extends Component {
   }
 
   render() {
+    // console.log(BannerWidth);
     chosingProvider = this.state.chosingProvider;
     return (
       <Container
@@ -409,7 +410,7 @@ class Login extends Component {
               }}
               style={{ paddingTop: 15, color: "#A9A9A9" }}
               onChangeText={text => {
-                console.log(text);
+                // console.log(text);
                 // text.length > 2
                 //   ? this.setState({ text: text })
                 this.setState({ text: text, searchLoadMore: true });
@@ -452,7 +453,7 @@ class Login extends Component {
     } else {
       image = "https://i.imgur.com/GN1yN2C.jpg";
     }
-    if (item.sale_price === 0) {
+    // if (item.sale_price === 0) {
       return (
         <View style={styles.listCateView}>
           <Image
@@ -461,24 +462,35 @@ class Login extends Component {
             resizeMode="contain"
           />
           <View style={{ flex: 2 }}>
-            <View style={[styles.flexRow, { alignItems: "center" }]}>
+          {this.publisherView(item)}
+            {/* <View style={[styles.flexRow, { alignItems: "center" }]}>
               <Text style={styles.boldText}>Publisher: </Text>
               <Text style={styles.publisher}>
                 {" "}{item.publisher}
               </Text>
-            </View>
+            </View> */}
             <Text
               numberOfLines={3}
               style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
             >
               {item.title}
             </Text>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>Price: </Text>
+            <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
+            <Text
+                  numberOfLines={2}
+                  style={[
+                    styles.boldText,
+                    { width: 100 }
+                  ]}
+                >
+                  Lowest Price before Sale:{" "}
+                </Text>
+              {/* <Text style={styles.boldText}>Lowest Price before Sale: </Text> */}
               <Text style={styles.price}>
                 {" "}{item.price_format}
               </Text>
             </View>
+            {this.salePriceView(item)}
             <View
               style={[
                 styles.flexRow,
@@ -506,68 +518,68 @@ class Login extends Component {
           </View>
         </View>
       );
-    } else {
-      return (
-        <View style={styles.listCateView}>
-          <Image
-            source={{ uri: image }}
-            style={[styles.image, { marginRight: 5 }]}
-            resizeMode="contain"
-          />
-          <View style={{ flex: 2 }}>
-            <View style={[styles.flexRow, { alignItems: "center" }]}>
-              <Text style={styles.boldText}>Publisher: </Text>
-              <Text style={styles.publisher}>
-                {" "}{item.publisher}
-              </Text>
-            </View>
-            <Text
-              numberOfLines={3}
-              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
-            >
-              {item.title}
-            </Text>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>Price: </Text>
-              <Text style={styles.price}>
-                {" "}{item.price_format}
-              </Text>
-            </View>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>Sale price: </Text>
-              <Text style={styles.price}>
-                {" "}{item.price_format.slice(0, 1)}
-                {item.sale_price}
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.flexRow,
-                {
-                  height: 30,
-                  justifyContent: "flex-start",
-                  alignItems: "center"
-                }
-              ]}
-            >
-              {/* <Text style={styles.boldText}>More detail: </Text> */}
-              <Text
-                numberOfLines={1}
-                onPress={() => this.openLink(item.detail_page)}
-                style={styles.detailLink}
-              >
-                More detail
-              </Text>
-              <Image
-                source={this.checkprovider(item.category.provider, "icon")}
-                style={{ height: 30, width: 30, marginLeft: 10 }}
-                resizeMode="contain"
-              />
-            </View>
-          </View>
-        </View>
-      );
-    }
+    // } else {
+    //   return (
+    //     <View style={styles.listCateView}>
+    //       <Image
+    //         source={{ uri: image }}
+    //         style={[styles.image, { marginRight: 5 }]}
+    //         resizeMode="contain"
+    //       />
+    //       <View style={{ flex: 2 }}>
+    //         <View style={[styles.flexRow, { alignItems: "center" }]}>
+    //           <Text style={styles.boldText}>Publisher: </Text>
+    //           <Text style={styles.publisher}>
+    //             {" "}{item.publisher}
+    //           </Text>
+    //         </View>
+    //         <Text
+    //           numberOfLines={3}
+    //           style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+    //         >
+    //           {item.title}
+    //         </Text>
+    //         <View style={styles.flexRow}>
+    //           <Text style={styles.boldText}>Lowest Price before Sale: </Text>
+    //           <Text style={styles.price}>
+    //             {" "}{item.price_format}
+    //           </Text>
+    //         </View>
+    //         <View style={styles.flexRow}>
+    //           <Text style={styles.boldText}>Sale price: </Text>
+    //           <Text style={styles.price}>
+    //             {" "}{item.price_format.slice(0, 1)}
+    //             {item.sale_price}
+    //           </Text>
+    //         </View>
+    //         <View
+    //           style={[
+    //             styles.flexRow,
+    //             {
+    //               height: 30,
+    //               justifyContent: "flex-start",
+    //               alignItems: "center"
+    //             }
+    //           ]}
+    //         >
+    //           {/* <Text style={styles.boldText}>More detail: </Text> */}
+    //           <Text
+    //             numberOfLines={1}
+    //             onPress={() => this.openLink(item.detail_page)}
+    //             style={styles.detailLink}
+    //           >
+    //             More detail
+    //           </Text>
+    //           <Image
+    //             source={this.checkprovider(item.category.provider, "icon")}
+    //             style={{ height: 30, width: 30, marginLeft: 10 }}
+    //             resizeMode="contain"
+    //           />
+    //         </View>
+    //       </View>
+    //     </View>
+    //   );
+    // }
   }
 
   checkprovider(provider, value) {
@@ -578,13 +590,13 @@ class Login extends Component {
       image = bestbuyImage;
       name = "Best Buy";
       icon = bestbuyIcon;
-    } else if (provider === "AMZ") {
+    } else if (provider === 10) {
       image = amazonImage;
       name = "Amazon";
       icon = amazonIcon;
     } else if (provider === 8) {
       image = walmartImage;
-      name = "Lowes";
+      name = "Lowe's";
       icon = lowesIcon;
     } else if (provider === "SEARS") {
       image = bestbuyImage;
@@ -619,6 +631,8 @@ class Login extends Component {
       return icon;
     }
   }
+
+  
   //____________________ render category in a site ______________
   renderSubCategoryModal() {
     let render = null;
@@ -704,7 +718,7 @@ class Login extends Component {
   }
 
   subCategoryPick(item) {
-    // console.log(12321, item);
+    console.log(12321, item);
     let page = 1;
     let params = {};
     params.id = item.id;
@@ -847,7 +861,7 @@ class Login extends Component {
           {
             text: "OK",
             onPress: () => {
-              console.log("Press");
+              // console.log("Press");
               this.search._root.focus();
             }
           }
@@ -858,7 +872,7 @@ class Login extends Component {
         {
           text: "OK",
           onPress: () => {
-            console.log("Press");
+            // console.log("Press");
             this.search._root.setNativeProps({ text: "" });
             this.search._root.focus();
           }
@@ -904,7 +918,7 @@ class Login extends Component {
           onEndReachedThreshold={1}
           renderItem={item =>
             <View style={{ marginLeft: 10, marginRight: 10 }}>
-              {this.renderListCateProducts(item)}
+              {this.renderListProducts(item)}
             </View>}
         />
       );
@@ -991,101 +1005,101 @@ class Login extends Component {
   }
 
   //_____________________________render san pham (product)_____________________________
-  renderListCateProducts(data) {
-    let item = data.item;
-    let image;
-    if (item.medium_image) {
-      image = item.medium_image;
-    } else {
-      image = "https://i.imgur.com/GN1yN2C.jpg";
-    }
-    // console.log("item",item);
-    if (item.sale_price === 0) {
-      return (
-        <View style={styles.listCateView}>
-          <Image
-            source={{ uri: image }}
-            style={[styles.image, { height: 120, marginRight: 5 }]}
-            resizeMode="contain"
-          />
-          <View style={{ flex: 2 }}>
-            <View style={[styles.flexRow, { alignItems: "center" }]}>
-              <Text style={styles.boldText}>Publisher: </Text>
-              <Text style={styles.publisher}>
-                {" "}{item.publisher}
-              </Text>
-            </View>
-            <Text
-              numberOfLines={3}
-              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
-            >
-              {item.title}
-            </Text>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>Price: </Text>
-              <Text style={styles.price}>
-                {" "}{item.price_format}
-              </Text>
-            </View>
-            <View style={styles.flexRow}>
-              <Text
-                onPress={() => this.openLink(item.detail_page)}
-                style={styles.detailLink}
-              >
-                More detail
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.listCateView}>
-          <Image
-            source={{ uri: image }}
-            style={[styles.image, { height: 120, marginRight: 5 }]}
-            resizeMode="contain"
-          />
-          <View style={{ flex: 2 }}>
-            <View style={[styles.flexRow, { alignItems: "center" }]}>
-              <Text style={styles.boldText}>Publisher: </Text>
-              <Text style={styles.publisher}>
-                {" "}{item.publisher}
-              </Text>
-            </View>
-            <Text
-              numberOfLines={3}
-              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
-            >
-              {item.title}
-            </Text>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>Price: </Text>
-              <Text style={styles.price}>
-                {" "}{item.price_format}
-              </Text>
-            </View>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>Sale price: </Text>
-              <Text style={styles.price}>
-                {" "}{item.price_format.slice(0, 1)}
-                {item.sale_price}
-              </Text>
-            </View>
-            <View style={styles.flexRow}>
-              {/* <Text style={styles.boldText}>Detail and Buy: </Text> */}
-              <Text
-                onPress={() => this.openLink(item.detail_page)}
-                style={styles.detailLink}
-              >
-                More detail
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
-    }
-  }
+  // renderListCateProducts(data) {
+  //   let item = data.item;
+  //   let image;
+  //   if (item.medium_image) {
+  //     image = item.medium_image;
+  //   } else {
+  //     image = "https://i.imgur.com/GN1yN2C.jpg";
+  //   }
+  //   // console.log("item",item);
+  //   if (item.sale_price === 0) {
+  //     return (
+  //       <View style={styles.listCateView}>
+  //         <Image
+  //           source={{ uri: image }}
+  //           style={[styles.image, { height: 120, marginRight: 5 }]}
+  //           resizeMode="contain"
+  //         />
+  //         <View style={{ flex: 2 }}>
+  //           <View style={[styles.flexRow, { alignItems: "center" }]}>
+  //             <Text style={styles.boldText}>Publisher: </Text>
+  //             <Text style={styles.publisher}>
+  //               {" "}{item.publisher}
+  //             </Text>
+  //           </View>
+  //           <Text
+  //             numberOfLines={3}
+  //             style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+  //           >
+  //             {item.title}
+  //           </Text>
+  //           <View style={styles.flexRow}>
+  //             <Text style={styles.boldText}>Lowest Price before Sale: </Text>
+  //             <Text style={styles.price}>
+  //               {" "}{item.price_format}
+  //             </Text>
+  //           </View>
+  //           <View style={styles.flexRow}>
+  //             <Text
+  //               onPress={() => this.openLink(item.detail_page)}
+  //               style={styles.detailLink}
+  //             >
+  //               More detail
+  //             </Text>
+  //           </View>
+  //         </View>
+  //       </View>
+  //     );
+  //   } else {
+  //     return (
+  //       <View style={styles.listCateView}>
+  //         <Image
+  //           source={{ uri: image }}
+  //           style={[styles.image, { height: 120, marginRight: 5 }]}
+  //           resizeMode="contain"
+  //         />
+  //         <View style={{ flex: 2 }}>
+  //           <View style={[styles.flexRow, { alignItems: "center" }]}>
+  //             <Text style={styles.boldText}>Publisher: </Text>
+  //             <Text style={styles.publisher}>
+  //               {" "}{item.publisher}
+  //             </Text>
+  //           </View>
+  //           <Text
+  //             numberOfLines={3}
+  //             style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+  //           >
+  //             {item.title}
+  //           </Text>
+  //           <View style={styles.flexRow}>
+  //             <Text style={styles.boldText}>Lowest Price before Sale: </Text>
+  //             <Text style={styles.price}>
+  //               {" "}{item.price_format}
+  //             </Text>
+  //           </View>
+  //           <View style={styles.flexRow}>
+  //             <Text style={styles.boldText}>Sale price: </Text>
+  //             <Text style={styles.price}>
+  //               {" "}{item.price_format.slice(0, 1)}
+  //               {item.sale_price}
+  //             </Text>
+  //           </View>
+  //           <View style={styles.flexRow}>
+  //             {/* <Text style={styles.boldText}>Detail and Buy: </Text> */}
+  //             <Text
+  //               onPress={() => this.openLink(item.detail_page)}
+  //               style={styles.detailLink}
+  //             >
+  //               More detail
+  //             </Text>
+  //           </View>
+  //         </View>
+  //       </View>
+  //     );
+  //   }
+  // }
   //______________ render list providers _________________
   renderListProvider(item, index) {
     // console.log("=============",index,item)
@@ -1123,10 +1137,18 @@ class Login extends Component {
   }
 
   handleScroll(event) {
+    var load = true;
     // console.log(event.nativeEvent.contentOffset.x, event.nativeEvent);
     var xOffset = event.nativeEvent.contentOffset.x;
     var chosingIndex = 0;
-    chosingIndex = parseInt(xOffset / 200);
+    if (load){
+      load = false
+      chosingIndex = parseInt(xOffset / 200);
+      setTimeout(() => {
+        load = true;
+      }, 5000);
+    }
+    console.log("chosingIndex",xOffset,chosingIndex)
     if (chosingIndex == this.state.providerIndex) {
       // console.log("2sadsa");
     } else {
@@ -1174,76 +1196,65 @@ class Login extends Component {
     }
     return (
       <View style={{ flex: 1, height: 137 }} style={styles.slide1}>
-        {/* <Text note> No product to show</Text> */}
-        <ActivityIndicator style={{ height: 137 }} />
+        <Text note> No product to show</Text>
+        {/* <ActivityIndicator style={{ height: 137 }} /> */}
       </View>
     );
   }
-  test() {}
-  autoscrollProduct(item, index) {
-    if (item.sale_price === 0) {
-      return (
-        <View key={index} style={{ marginLeft: 10, marginRight: 10 }}>
-          <View style={[styles.listCateView, { borderBottomWidth: 0 }]}>
-            <Image
-              source={{ uri: item.medium_image }}
-              style={[styles.image, { marginLeft: 5, marginRight: 5 }]}
-              resizeMode="contain"
-            />
-            <View style={{ flex: 2 }}>
-              <View
-                style={[
-                  styles.flexRow,
-                  { marginRight: 10, alignItems: "center", flex: 1 }
-                ]}
-              >
-                <Text style={styles.boldText}>Publisher: </Text>
-                <Text style={styles.publisher}>
-                  {" "}{item.publisher}
-                </Text>
-              </View>
-              <Text
-                numberOfLines={2}
-                style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
-              >
-                {item.title}
-              </Text>
-              <View style={styles.flexRow}>
-                <Text style={styles.boldText}>Price: </Text>
-                <Text style={styles.price}>
-                  {" "}{item.price_format}
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.flexRow,
-                  {
-                    height: 30,
-                    justifyContent: "flex-start",
-                    alignItems: "center"
-                  }
-                ]}
-              >
-                <Text
-                  numberOfLines={1}
-                  onPress={() => this.openLink(item.detail_page)}
-                  style={styles.detailLink}
-                >
-                  More detail
-                </Text>
-                <Image
-                  source={this.checkprovider(item.params, "icon")}
-                  style={{ height: 30, width: 30, marginLeft: 10 }}
-                  resizeMode="contain"
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      );
+
+  checkpublisher(name) {
+    // console.log(name)
+    if (
+      name === "Best Buy" ||
+      name ==="Linen Chest" ||
+      name ==="The bay" ||
+      name ==="Bed Bath and Beyond" ||
+      name ==="Lowe's" ||
+      name ==="Home Depot" ||
+      name ==="Amazon"
+    ) {
+      return true;
     } else {
+      return false;
+    }
+  }
+  publisherView(item){
+    // console.log(this.checkpublisher(item.publisher))
+    if (!this.checkpublisher(item.publisher)) {
+    return (
+      <View
+      style={[
+        styles.flexRow,
+        { marginRight: 10, alignItems: "center", flex: 1 }
+      ]}
+    >
+      <Text style={styles.boldText}>Publisher: </Text>
+      <Text style={styles.publisher}>
+        {" "}{item.publisher}
+      </Text>
+    </View>
+    );
+  }
+}
+
+salePriceView(item){
+  // console.log(item.sale_price)
+  if (item.sale_price !== 0){
+    return(
+      <View style={styles.flexRow}>
+      <Text style={styles.boldText}>Sale price: </Text>
+      <Text style={styles.price}>
+        {" "}{item.price_format.slice(0, 1)}
+        {item.sale_price}
+      </Text>
+    </View>
+    )
+  }
+}
+  autoscrollProduct(item, index) {
+    // if (item.sale_price === 0) {
       return (
-        <View key={index} style={{ marginLeft: 10, marginRight: 10 }}>
+        <View key={index} style={{ marginLeft: 10, marginRight: 10, flex: 1 }}>
           <View style={[styles.listCateView, { borderBottomWidth: 0 }]}>
             <Image
               source={{ uri: item.medium_image }}
@@ -1251,7 +1262,8 @@ class Login extends Component {
               resizeMode="contain"
             />
             <View style={{ flex: 2 }}>
-              <View
+            {this.publisherView(item)}
+              {/* <View
                 style={[
                   styles.flexRow,
                   { marginRight: 10, alignItems: "center", flex: 1 }
@@ -1261,26 +1273,28 @@ class Login extends Component {
                 <Text style={styles.publisher}>
                   {" "}{item.publisher}
                 </Text>
-              </View>
+              </View> */}
               <Text
                 numberOfLines={2}
                 style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
               >
                 {item.title}
               </Text>
-              <View style={styles.flexRow}>
-                <Text style={styles.boldText}>Price: </Text>
+              <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
+                <Text
+                  numberOfLines={2}
+                  style={[
+                    styles.boldText,
+                    { width: 100 }
+                  ]}
+                >
+                  Lowest Price before Sale:{" "}
+                </Text>
                 <Text style={styles.price}>
                   {" "}{item.price_format}
                 </Text>
               </View>
-              <View style={styles.flexRow}>
-                <Text style={styles.boldText}>Sale price: </Text>
-                <Text style={styles.price}>
-                  {" "}{item.price_format.slice(0, 1)}
-                  {item.sale_price}
-                </Text>
-              </View>
+              {this.salePriceView(item)}
               <View
                 style={[
                   styles.flexRow,
@@ -1308,7 +1322,83 @@ class Login extends Component {
           </View>
         </View>
       );
-    }
+    // } else {
+    //   return (
+    //     <View key={index} style={{ marginLeft: 10, marginRight: 10, flex: 1 }}>
+    //       <View style={[styles.listCateView, { borderBottomWidth: 0 }]}>
+    //         <Image
+    //           source={{ uri: item.medium_image }}
+    //           style={[styles.image, { marginLeft: 5, marginRight: 5 }]}
+    //           resizeMode="contain"
+    //         />
+    //         <View style={{ flex: 2 }}>
+    //         {this.publisherView(item)}
+    //           {/* <View
+    //             style={[
+    //               styles.flexRow,
+    //               { marginRight: 10, alignItems: "center", flex: 1 }
+    //             ]}
+    //           >
+    //             <Text style={styles.boldText}>Publisher: </Text>
+    //             <Text style={styles.publisher}>
+    //               {" "}{item.publisher}
+    //             </Text>
+    //           </View> */}
+    //           <Text
+    //             numberOfLines={2}
+    //             style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+    //           >
+    //             {item.title}
+    //           </Text>
+    //           <View style={styles.flexRow}>
+    //             <Text
+    //               numberOfLines={1}
+    //               style={[
+    //                 styles.boldText,
+    //                 { width: BannerWidth < 375 ? "" : 160 }
+    //               ]}
+    //             >
+    //               Lowest Price before Sale:{" "}
+    //             </Text>
+    //             <Text style={styles.price}>
+    //               {" "}{item.price_format}
+    //             </Text>
+    //           </View>
+    //           {/* <View style={styles.flexRow}>
+    //             <Text style={styles.boldText}>Sale price: </Text>
+    //             <Text style={styles.price}>
+    //               {" "}{item.price_format.slice(0, 1)}
+    //               {item.sale_price}
+    //             </Text>
+    //           </View> */}
+    //           <View
+    //             style={[
+    //               styles.flexRow,
+    //               {
+    //                 height: 30,
+    //                 justifyContent: "flex-start",
+    //                 alignItems: "center"
+    //               }
+    //             ]}
+    //           >
+    //             <Text
+    //               numberOfLines={1}
+    //               onPress={() => this.openLink(item.detail_page)}
+    //               style={styles.detailLink}
+    //             >
+    //               More detail
+    //             </Text>
+    //             <Image
+    //               source={this.checkprovider(item.params, "icon")}
+    //               style={{ height: 30, width: 30, marginLeft: 10 }}
+    //               resizeMode="contain"
+    //             />
+    //           </View>
+    //         </View>
+    //       </View>
+    //     </View>
+    //   );
+    // }
   }
   checkSpaceAll(text) {
     if (!text.replace(/\s/g, "").length) {
