@@ -454,6 +454,7 @@ class Login extends Component {
       image = "https://i.imgur.com/GN1yN2C.jpg";
     }
     // if (item.sale_price === 0) {
+      if (item.price_amount!==0 && item.sale_price !== 0) {
       return (
         <View style={styles.listCateView}>
           <Image
@@ -475,7 +476,7 @@ class Login extends Component {
             >
               {item.title}
             </Text>
-            <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
+            {/* <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
             <Text
                   numberOfLines={2}
                   style={[
@@ -485,11 +486,11 @@ class Login extends Component {
                 >
                   Lowest Price before Sale:{" "}
                 </Text>
-              {/* <Text style={styles.boldText}>Lowest Price before Sale: </Text> */}
               <Text style={styles.price}>
                 {" "}{item.price_format}
               </Text>
-            </View>
+            </View> */}
+            {this.lowestPriceView(item)}
             {this.salePriceView(item)}
             <View
               style={[
@@ -517,7 +518,8 @@ class Login extends Component {
             </View>
           </View>
         </View>
-      );
+      )
+    };
     // } else {
     //   return (
     //     <View style={styles.listCateView}>
@@ -1141,13 +1143,7 @@ class Login extends Component {
     // console.log(event.nativeEvent.contentOffset.x, event.nativeEvent);
     var xOffset = event.nativeEvent.contentOffset.x;
     var chosingIndex = 0;
-    if (load){
-      load = false
-      chosingIndex = parseInt(xOffset / 200);
-      setTimeout(() => {
-        load = true;
-      }, 5000);
-    }
+    chosingIndex = parseInt(xOffset / 200);
     console.log("chosingIndex",xOffset,chosingIndex)
     if (chosingIndex == this.state.providerIndex) {
       // console.log("2sadsa");
@@ -1237,6 +1233,28 @@ class Login extends Component {
   }
 }
 
+lowestPriceView(item){
+  console.log(item.price_amount)
+  if (item.price_amount!==0) {
+    return(
+    <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
+    <Text
+      numberOfLines={2}
+      style={[
+        styles.boldText,
+        { width: 100 }
+      ]}
+    >
+      Lowest Price before Sale:{" "}
+    </Text>
+    <Text style={styles.price}>
+      ${item.price_amount}
+    </Text>
+  </View>
+    )
+  }
+}
+
 salePriceView(item){
   // console.log(item.sale_price)
   if (item.sale_price !== 0){
@@ -1244,14 +1262,14 @@ salePriceView(item){
       <View style={styles.flexRow}>
       <Text style={styles.boldText}>Sale price: </Text>
       <Text style={styles.price}>
-        {" "}{item.price_format.slice(0, 1)}
-        {item.sale_price}
+        ${item.sale_price}
       </Text>
     </View>
     )
   }
 }
   autoscrollProduct(item, index) {
+    // console.log("123123141555555",item)
     // if (item.sale_price === 0) {
       return (
         <View key={index} style={{ marginLeft: 10, marginRight: 10, flex: 1 }}>
@@ -1280,7 +1298,7 @@ salePriceView(item){
               >
                 {item.title}
               </Text>
-              <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
+              {/* <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
                 <Text
                   numberOfLines={2}
                   style={[
@@ -1293,7 +1311,8 @@ salePriceView(item){
                 <Text style={styles.price}>
                   {" "}{item.price_format}
                 </Text>
-              </View>
+              </View> */}
+              {this.lowestPriceView(item)}
               {this.salePriceView(item)}
               <View
                 style={[
