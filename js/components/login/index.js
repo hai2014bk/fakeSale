@@ -175,9 +175,11 @@ class Login extends Component {
       if (this.state.searchLoadMore) {
         products = products.concat(props.searchProduct.data);
         this.setState({ products, searchLoadMore: false });
+        
       } else {
         this.setState({ products: props.searchProduct.data });
       }
+      // console.log(this.state.products)
     }
 
     if (props.fetchCategory.success) {
@@ -188,13 +190,14 @@ class Login extends Component {
     if (props.fetchCategoryProducts.success) {
       if (this.state.isLoadMore) {
         if (props.fetchCategoryProducts.data.length < 10) {
+          console.log(33333)
           cateProducts = cateProducts.concat(props.fetchCategoryProducts.data);
           this.setState({
             cateProducts,
             isLoadMore: false,
             cantLoadMore: true
           });
-        } else {
+        } else {console.log(22222)
           cateProducts = cateProducts.concat(props.fetchCategoryProducts.data);
           this.setState({
             cateProducts,
@@ -202,9 +205,11 @@ class Login extends Component {
             cantLoadMore: false
           });
         }
-      } else {
-        this.setState({ cateProducts: props.fetchCategoryProducts.data });
+      } else {console.log(11111)
+        cateProducts = cateProducts.concat(props.fetchCategoryProducts.data);
+        this.setState({ cateProducts: cateProducts });
       }
+      console.log(this.state.cateProducts.length)
     }
   }
 
@@ -655,7 +660,7 @@ class Login extends Component {
   }
 
   subCategoryPick(item) {
-    console.log(12321, item);
+    // console.log(12321, item);
     let page = 1;
     let params = {};
     params.id = item.id;
@@ -782,9 +787,9 @@ class Login extends Component {
     this.setState({ products: [], searchPage: 1 });
     let searchPage = 1;
     if (this.state.text !== "" || !this.checkSpaceAll(this.state.text)) {
-      console.log("search1");
+      // console.log("search1");
       if (this.state.text.length >= 3) {
-        console.log("search2");
+        // console.log("search2");
         this.setState({
           productModalVisible: true,
           products: [],
@@ -983,7 +988,7 @@ class Login extends Component {
     var xOffset = event.nativeEvent.contentOffset.x;
     var chosingIndex = 0;
     chosingIndex = parseInt(xOffset / 200);
-    console.log("chosingIndex",xOffset,chosingIndex)
+    // console.log("chosingIndex",xOffset,chosingIndex)
     if (chosingIndex == this.state.providerIndex) {
       // console.log("2sadsa");
     } else {
@@ -1073,7 +1078,7 @@ class Login extends Component {
 }
 
 lowestPriceView(item){
-  console.log(item.price_amount)
+  // console.log(item.price_amount)
   if (item.price_amount!==0) {
     return(
     <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
