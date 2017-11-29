@@ -453,7 +453,6 @@ class Login extends Component {
     } else {
       image = "https://i.imgur.com/GN1yN2C.jpg";
     }
-      if (item.price_amount!==0 && item.sale_price !== 0) {
       return (
         <View style={styles.listCateView}>
           <Image
@@ -518,7 +517,6 @@ class Login extends Component {
           </View>
         </View>
       )
-    };
   }
 
   checkprovider(provider, value) {
