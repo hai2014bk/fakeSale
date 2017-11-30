@@ -1089,9 +1089,9 @@ class Login extends Component {
     if (!this.checkpublisher(item.publisher)) {
       return (
         <View
-          style={[styles.flexRow, { marginRight: 10, alignItems: "center" }]}
+          style={[styles.flexRow, { marginRight: 2, alignItems: "center" }]}
         >
-          <Text style={styles.boldText}>Publisher: </Text>
+          <Text style={styles.publisherText}>Publisher: </Text>
           <Text style={styles.publisher}>
             {item.publisher.trim()}
           </Text>
