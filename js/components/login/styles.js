@@ -75,11 +75,12 @@ export default {
   boldText: {
     color: "#696969",
     fontWeight: "500",
-    fontSize: 14,
+    fontSize: deviceWidth * 0.04,
   },
   detailLink: {
     color: "#4C4CFF",
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
+    fontSize:13
     // marginLeft: 5
   },
   alertText: {
@@ -97,12 +98,12 @@ export default {
   price: {
     color: "#DC143C",
     fontWeight: "500",
-    fontSize: 15
+    fontSize: deviceWidth * 0.04
   },
   publisher: {
     color: primary,
     fontWeight: "500",
-    fontSize: 14,
+    fontSize: 12,
     // width:120,
     marginRight:10
   },
@@ -198,9 +199,8 @@ export default {
 },
   listCateView: {
     flexDirection: "row",
-    marginBottom: 5,
-    marginTop: 5,
-    borderBottomWidth: 0.5
+    marginBottom: 10,
+    marginTop: 10,
     // marginRight:10,
     // marginLeft:10
   },

@@ -17,7 +17,8 @@
 			"bundleIdentifier": "com.FakeSale"
 		},
 		"android": {
-			"package": "com.FakeSale"
+			"package": "com.FakeSale",
+			"versionCode" :2
 		},
 		"androidStatusBarColor": "#01cca1",
 		"androidStatusBar": {

@@ -19,6 +19,7 @@ import {
   Text,
   List,
   ListItem,
+  Label,
   Header,
   Container,
   Content,
@@ -39,11 +40,6 @@ import Swiper from "react-native-swiper";
 import { connect } from "react-redux";
 import styles from "./styles";
 import { Permissions, Notifications, ImagePicker, FileSystem } from "expo";
-import PopupDialog, {
-  DialogTitle,
-  DialogButton
-} from "react-native-popup-dialog";
-// import Carousel, { ParallaxImage } from "react-native-snap-carousel"
 import Carousel from "react-native-banner-carousel";
 import Spinner from "react-native-loading-spinner-overlay";
 import * as mConstants from "../../utils/Constants";
@@ -470,18 +466,12 @@ class Login extends Component {
           />
           <View style={{ flex: 2 }}>
             {this.publisherView(item)}
-            {/* <View style={[styles.flexRow, { alignItems: "center" }]}>
-              <Text style={styles.boldText}>Publisher: </Text>
-              <Text style={styles.publisher}>
-                {" "}{item.publisher}
-              </Text>
-            </View> */}
-            <Text
+            <Label
               numberOfLines={3}
-              style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+              style={{fontWeight: "bold", color: "black",fontSize:15}}
             >
-              {item.title}
-            </Text>
+              {item.title.trim()}
+            </Label>
             {/* <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
             <Text
                   numberOfLines={2}
@@ -1070,7 +1060,7 @@ class Login extends Component {
         <View
           style={[
             styles.flexRow,
-            { marginRight: 10, alignItems: "center", flex: 1 }
+            { marginRight: 10, alignItems: "center" }
           ]}
         >
           <Text style={styles.boldText}>Publisher: </Text>
@@ -1096,13 +1086,12 @@ class Login extends Component {
             numberOfLines={1}
             style={[
               styles.boldText,
-              { width: 148 }
             ]}
           >
             Lowest Regular Price:{" "}
           </Text>
           <Text style={styles.price}>
-            ${item.price_amount}
+            ${this.priceHandle(item.price_amount)}
           </Text>
         </View>
       );
@@ -1116,12 +1105,17 @@ class Login extends Component {
         <View style={styles.flexRow}>
           <Text style={styles.boldText}>Sale Price: </Text>
           <Text style={styles.price}>
-            ${item.sale_price}
+            ${this.priceHandle(item.sale_price)}
           </Text>
         </View>
       );
     }
   }
+  priceHandle(price) {
+		var count = 0
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+		return price
+	}
   autoscrollProduct(item, index) {
     // console.log("123123141555555",item)
     // if (item.sale_price === 0) {
@@ -1134,7 +1128,7 @@ class Login extends Component {
               style={[styles.image, { marginLeft: 5, marginRight: 5 }]}
               resizeMode="contain"
             />
-            <View style={{ flex: 2 }}>
+            <View style={{flex: 2 }}>
               {this.publisherView(item)}
               {/* <View
                 style={[
@@ -1149,9 +1143,9 @@ class Login extends Component {
               </View> */}
               <Text
                 numberOfLines={2}
-                style={{ marginTop: 5, fontWeight: "bold", color: "black" }}
+                style={{fontWeight: "bold", color: "black" }}
               >
-                {item.title}
+                {item.title.trim()}
               </Text>
               {/* <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
                 <Text
