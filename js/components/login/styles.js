@@ -103,7 +103,7 @@ export default {
     color: primary,
     fontWeight: "500",
     fontSize: 14,
-    width:120,
+    // width:120,
     marginRight:10
   },
   flexRow: {
