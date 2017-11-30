@@ -42,8 +42,8 @@ export default {
     backgroundColor: "white",
     borderBottomWidth: 1,
     borderColor: "#cecece",
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   searchSectionModal: {
     flex: 1,
@@ -76,12 +76,17 @@ export default {
     color: "#696969",
     fontWeight: "500",
     fontSize: deviceWidth * 0.04,
-    width:100
+    width: 100
+  },
+  publisherText: {
+    color: "#696969",
+    fontWeight: "500",
+    fontSize: deviceWidth * 0.04
   },
   detailLink: {
     color: "#4C4CFF",
     textDecorationLine: "underline",
-    fontSize:13
+    fontSize: 15
     // marginLeft: 5
   },
   alertText: {
@@ -104,12 +109,12 @@ export default {
   publisher: {
     color: primary,
     fontWeight: "500",
-    fontSize: 12,
+    fontSize: 14,
     // width:120,
-    marginRight:10
+    marginRight: 3
   },
   flexRow: {
-    flexDirection: "row",
+    flexDirection: "row"
   },
   background: {
     width: "100%",
@@ -191,17 +196,17 @@ export default {
     marginBottom: 10,
     marginLeft: 5
   },
-  opacityView:{
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    flex:1,
-    width:"100%",
-    alignItems:'flex-start',
-    justifyContent:'flex-end',
-},
+  opacityView: {
+    backgroundColor: "rgba(0,0,0,0.1)",
+    flex: 1,
+    width: "100%",
+    alignItems: "flex-start",
+    justifyContent: "flex-end"
+  },
   listCateView: {
     flexDirection: "row",
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: 10
     // marginRight:10,
     // marginLeft:10
   },
@@ -248,24 +253,24 @@ export default {
     alignItems: "center",
     width: deviceWidth,
     flexDirection: "row",
-    height:40
+    height: 40
   },
-  providerNameShow:{
+  providerNameShow: {
     flex: 1,
     justifyContent: "space-between",
-    alignItems:"center",
+    alignItems: "center",
     height: 40,
     flexDirection: "row",
-    marginLeft:10,
-    marginRight:10
+    marginLeft: 10,
+    marginRight: 10
   },
-  provNameText:{
+  provNameText: {
     color: "black",
     fontSize: 20,
     fontWeight: "bold",
     paddingLeft: 15
   },
-  bigTextHeader:{
+  bigTextHeader: {
     marginTop: 10,
     color: "black",
     fontSize: 25,
