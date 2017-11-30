@@ -94,7 +94,7 @@ class Login extends Component {
       searchPage: 1,
       cateId: 0,
       isLoadMore: false,
-      searchLoadMore: false,
+      searchLoadMore: true,
       brandTitle: "",
       cantLoadMore: false,
       cate: "",
@@ -103,7 +103,8 @@ class Login extends Component {
       visible: true,
       productions: "",
       loadProvider: true,
-      titleProvider: ""
+      titleProvider: "",
+      shouldLoadmore: true
     };
   }
 
@@ -145,7 +146,20 @@ class Login extends Component {
       }
     }, 15000);
   }
-
+  uniqueArray(array){
+    var seens = []
+    console.log('asd12e12e',array)
+    for (item in array){
+      for (seenItem in seens){
+        if (item.id == seenItem.id){
+          array.splice(item,1)
+        } else {
+          seens.push(item)
+        }
+      }
+    }
+    return array
+  }
   componentWillReceiveProps(props) {
     // console.log("props");
     // let category = this.state.category;
@@ -168,15 +182,28 @@ class Login extends Component {
       }
     }
     if (props.searchProduct.success) {
-      if (this.state.searchLoadMore) {
-        products = products.concat(props.searchProduct.data);
-        this.setState({ products, searchLoadMore: false });
-      } else {
-        this.setState({ products: props.searchProduct.data });
-      }
-      // console.log(this.state.products)
+          if (props.searchProduct.data.length < 10) {
+            console.log("aaaa", props.searchProduct.data.length);
+            products = products.concat(props.searchProduct.data);
+            console.log('poducqwcas',products)
+            var test = this.uniqueArray(products)
+            products = this.uniqueArray(products)            
+            this.setState({
+              products,
+              shouldLoadmore: false,
+              searchLoadMore: false
+            });
+          } else {
+            products = products.concat(props.searchProduct.data);
+            var test = this.uniqueArray(products)            
+            products = this.uniqueArray(products)
+            this.setState({
+              products,
+              shouldLoadmore: true,
+              searchLoadMore: false
+            });
+          }
     }
-
     if (props.fetchCategory.success) {
       subCategory = props.fetchCategory.data;
       this.setState({ subCategory });
@@ -212,6 +239,7 @@ class Login extends Component {
 
   render() {
     // console.log(BannerWidth);
+    console.log("sdsadas", this.state.products.length);
     chosingProvider = this.state.chosingProvider;
     return (
       <Container
@@ -468,7 +496,7 @@ class Login extends Component {
             {this.publisherView(item)}
             <Label
               numberOfLines={3}
-              style={{fontWeight: "bold", color: "black",fontSize:15}}
+              style={{ fontWeight: "bold", color: "black", fontSize: 15 }}
             >
               {item.title.trim()}
             </Label>
@@ -834,12 +862,14 @@ class Login extends Component {
 
   searchProductLoadMore() {
     if (!this.state.searchLoadMore) {
-      let searchPage = this.state.searchPage + 1;
-      this.setState({ searchPage, searchLoadMore: true });
-      let params = {};
-      params.keyword = this.state.text.trim();
-      params.page = searchPage;
-      this.props.search(params);
+      if (this.state.shouldLoadmore) {
+        let searchPage = this.state.searchPage + 1;
+        this.setState({ searchPage, searchLoadMore: true });
+        let params = {};
+        params.keyword = this.state.text.trim();
+        params.page = searchPage;
+        this.props.search(params);
+      }
     } else {
     }
   }
@@ -1058,10 +1088,7 @@ class Login extends Component {
     if (!this.checkpublisher(item.publisher)) {
       return (
         <View
-          style={[
-            styles.flexRow,
-            { marginRight: 10, alignItems: "center" }
-          ]}
+          style={[styles.flexRow, { marginRight: 10, alignItems: "center" }]}
         >
           <Text style={styles.boldText}>Publisher: </Text>
           <Text style={styles.publisher}>
@@ -1074,6 +1101,10 @@ class Login extends Component {
 
   lowestPriceView(item) {
     // console.log(item.price_amount)
+    var price = "$" + this.priceHandle(item.price_amount);
+    if (item.category.provider == 10) {
+      price = item.price_format;
+    }
     if (item.price_amount !== 0) {
       return (
         <View
@@ -1082,16 +1113,11 @@ class Login extends Component {
             { justifyContent: "flex-start", alignItems: "center" }
           ]}
         >
-          <Text
-            numberOfLines={1}
-            style={[
-              styles.boldText,
-            ]}
-          >
+          <Text numberOfLines={2} style={[styles.boldText]}>
             Lowest Regular Price:{" "}
           </Text>
           <Text style={styles.price}>
-            ${this.priceHandle(item.price_amount)}
+            {price}
           </Text>
         </View>
       );
@@ -1112,10 +1138,10 @@ class Login extends Component {
     }
   }
   priceHandle(price) {
-		var count = 0
-		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-		return price
-	}
+    var count = 0;
+    price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    return price;
+  }
   autoscrollProduct(item, index) {
     // console.log("123123141555555",item)
     // if (item.sale_price === 0) {
@@ -1128,7 +1154,7 @@ class Login extends Component {
               style={[styles.image, { marginLeft: 5, marginRight: 5 }]}
               resizeMode="contain"
             />
-            <View style={{flex: 2 }}>
+            <View style={{ flex: 2 }}>
               {this.publisherView(item)}
               {/* <View
                 style={[
@@ -1143,7 +1169,7 @@ class Login extends Component {
               </View> */}
               <Text
                 numberOfLines={2}
-                style={{fontWeight: "bold", color: "black" }}
+                style={{ fontWeight: "bold", color: "black" }}
               >
                 {item.title.trim()}
               </Text>
