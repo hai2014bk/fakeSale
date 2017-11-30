@@ -175,7 +175,6 @@ class Login extends Component {
       if (this.state.searchLoadMore) {
         products = products.concat(props.searchProduct.data);
         this.setState({ products, searchLoadMore: false });
-        
       } else {
         this.setState({ products: props.searchProduct.data });
       }
@@ -190,14 +189,15 @@ class Login extends Component {
     if (props.fetchCategoryProducts.success) {
       if (this.state.isLoadMore) {
         if (props.fetchCategoryProducts.data.length < 10) {
-          console.log(33333)
+          console.log(33333);
           cateProducts = cateProducts.concat(props.fetchCategoryProducts.data);
           this.setState({
             cateProducts,
             isLoadMore: false,
             cantLoadMore: true
           });
-        } else {console.log(22222)
+        } else {
+          console.log(22222);
           cateProducts = cateProducts.concat(props.fetchCategoryProducts.data);
           this.setState({
             cateProducts,
@@ -205,11 +205,12 @@ class Login extends Component {
             cantLoadMore: false
           });
         }
-      } else {console.log(11111)
+      } else {
+        console.log(11111);
         cateProducts = cateProducts.concat(props.fetchCategoryProducts.data);
         this.setState({ cateProducts: cateProducts });
       }
-      console.log(this.state.cateProducts.length)
+      console.log(this.state.cateProducts.length);
     }
   }
 
@@ -446,7 +447,7 @@ class Login extends Component {
       </View>
     );
   }
-
+  //___________________________ render list product _______________
   renderListProducts(data) {
     let item = data.item;
     // console.log("data", item);
@@ -458,6 +459,8 @@ class Login extends Component {
     } else {
       image = "https://i.imgur.com/GN1yN2C.jpg";
     }
+
+    if (item.price_amount !== 0) {
       return (
         <View style={styles.listCateView}>
           <Image
@@ -466,7 +469,7 @@ class Login extends Component {
             resizeMode="contain"
           />
           <View style={{ flex: 2 }}>
-          {this.publisherView(item)}
+            {this.publisherView(item)}
             {/* <View style={[styles.flexRow, { alignItems: "center" }]}>
               <Text style={styles.boldText}>Publisher: </Text>
               <Text style={styles.publisher}>
@@ -521,7 +524,10 @@ class Login extends Component {
             </View>
           </View>
         </View>
-      )
+      );
+    } else {
+      return null;
+    }
   }
 
   checkprovider(provider, value) {
@@ -574,7 +580,6 @@ class Login extends Component {
     }
   }
 
-  
   //____________________ render category in a site ______________
   renderSubCategoryModal() {
     let render = null;
@@ -773,7 +778,7 @@ class Login extends Component {
       cate: cate,
       cateModalVisible: false,
       subCateModalVisible: true,
-      subCategory:[]
+      subCategory: []
       // brandTitle: item.category_name
     });
     let params = item.id;
@@ -1046,75 +1051,81 @@ class Login extends Component {
     // console.log(name)
     if (
       name === "Best Buy" ||
-      name ==="Linen Chest" ||
-      name ==="The bay" ||
-      name ==="Bed Bath and Beyond" ||
-      name ==="Lowe's" ||
-      name ==="Home Depot" ||
-      name ==="Amazon"
+      name === "Linen Chest" ||
+      name === "The bay" ||
+      name === "Bed Bath and Beyond" ||
+      name === "Lowe's" ||
+      name === "Home Depot" ||
+      name === "Amazon"
     ) {
       return true;
     } else {
       return false;
     }
   }
-  publisherView(item){
+  publisherView(item) {
     // console.log(this.checkpublisher(item.publisher))
     if (!this.checkpublisher(item.publisher)) {
-    return (
-      <View
-      style={[
-        styles.flexRow,
-        { marginRight: 10, alignItems: "center", flex: 1 }
-      ]}
-    >
-      <Text style={styles.boldText}>Publisher: </Text>
-      <Text style={styles.publisher}>
-        {" "}{item.publisher}
-      </Text>
-    </View>
-    );
+      return (
+        <View
+          style={[
+            styles.flexRow,
+            { marginRight: 10, alignItems: "center", flex: 1 }
+          ]}
+        >
+          <Text style={styles.boldText}>Publisher: </Text>
+          <Text style={styles.publisher}>
+            {" "}{item.publisher}
+          </Text>
+        </View>
+      );
+    }
   }
-}
 
-lowestPriceView(item){
-  // console.log(item.price_amount)
-  if (item.price_amount!==0) {
-    return(
-    <View style={[styles.flexRow,{justifyContent:"flex-start", alignItems:"center"}]}>
-    <Text
-      numberOfLines={2}
-      style={[
-        styles.boldText,
-        { width: 100 }
-      ]}
-    >
-      Lowest Price before Sale:{" "}
-    </Text>
-    <Text style={styles.price}>
-      ${item.price_amount}
-    </Text>
-  </View>
-    )
+  lowestPriceView(item) {
+    // console.log(item.price_amount)
+    if (item.price_amount !== 0) {
+      return (
+        <View
+          style={[
+            styles.flexRow,
+            { justifyContent: "flex-start", alignItems: "center" }
+          ]}
+        >
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.boldText,
+              { width: 148 }
+            ]}
+          >
+            Lowest Regular Price:{" "}
+          </Text>
+          <Text style={styles.price}>
+            ${item.price_amount}
+          </Text>
+        </View>
+      );
+    }
   }
-}
 
-salePriceView(item){
-  // console.log(item.sale_price)
-  if (item.sale_price !== 0){
-    return(
-      <View style={styles.flexRow}>
-      <Text style={styles.boldText}>Sale price: </Text>
-      <Text style={styles.price}>
-        ${item.sale_price}
-      </Text>
-    </View>
-    )
+  salePriceView(item) {
+    // console.log(item.sale_price)
+    if (item.sale_price !== 0) {
+      return (
+        <View style={styles.flexRow}>
+          <Text style={styles.boldText}>Sale Price: </Text>
+          <Text style={styles.price}>
+            ${item.sale_price}
+          </Text>
+        </View>
+      );
+    }
   }
-}
   autoscrollProduct(item, index) {
     // console.log("123123141555555",item)
     // if (item.sale_price === 0) {
+    if (item.price_amount !== 0) {
       return (
         <View key={index} style={{ marginLeft: 10, marginRight: 10, flex: 1 }}>
           <View style={[styles.listCateView, { borderBottomWidth: 0 }]}>
@@ -1124,7 +1135,7 @@ salePriceView(item){
               resizeMode="contain"
             />
             <View style={{ flex: 2 }}>
-            {this.publisherView(item)}
+              {this.publisherView(item)}
               {/* <View
                 style={[
                   styles.flexRow,
@@ -1185,6 +1196,9 @@ salePriceView(item){
           </View>
         </View>
       );
+    } else {
+      return null;
+    }
   }
   checkSpaceAll(text) {
     if (!text.replace(/\s/g, "").length) {
