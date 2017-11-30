@@ -1,12 +1,12 @@
 {
 	"expo": {
 		"sdkVersion": "20.0.0",
-		"icon": "./images/fs_lg.jpg",
+		"icon": "./images/icon.png",
 		"slug": "FakeSale",
 		"loading": {
 			"hideExponentText": true,
 			"icon": "./images/loading.png",
-			"backgroundImage": "./images/fs_lg.jpg"
+			"backgroundImage": "./images/launchImages/splashscreen.png"
 		},
 		"orientation": "portrait",
 		"primaryColor": "#cccccc",
