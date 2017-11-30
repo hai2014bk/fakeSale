@@ -522,7 +522,8 @@ class Login extends Component {
                 {
                   height: 30,
                   justifyContent: "flex-start",
-                  alignItems: "center"
+                  alignItems: "center",
+                  marginTop:10                  
                 }
               ]}
             >
@@ -1092,7 +1093,7 @@ class Login extends Component {
         >
           <Text style={styles.boldText}>Publisher: </Text>
           <Text style={styles.publisher}>
-            {" "}{item.publisher}
+            {item.publisher.trim()}
           </Text>
         </View>
       );
@@ -1113,7 +1114,7 @@ class Login extends Component {
             { justifyContent: "flex-start", alignItems: "center" }
           ]}
         >
-          <Text numberOfLines={2} style={[styles.boldText]}>
+          <Text numberOfLines={2} style={[styles.priceText]}>
             Lowest Regular Price:{" "}
           </Text>
           <Text style={styles.price}>
@@ -1195,7 +1196,8 @@ class Login extends Component {
                   {
                     height: 30,
                     justifyContent: "flex-start",
-                    alignItems: "center"
+                    alignItems: "center",
+                    marginTop:10
                   }
                 ]}
               >

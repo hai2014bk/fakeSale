@@ -76,12 +76,19 @@ export default {
     color: "#696969",
     fontWeight: "500",
     fontSize: deviceWidth * 0.04,
-    width:100
+  },
+  priceText:{
+    color: "#696969",
+    fontWeight: "500",
+    fontSize: deviceWidth * 0.04,
+    width: deviceWidth * 0.3,
+    textAlign:'right'
   },
   detailLink: {
     color: "#4C4CFF",
     textDecorationLine: "underline",
-    fontSize:13
+    fontSize:13,
+    
     // marginLeft: 5
   },
   alertText: {
@@ -99,14 +106,15 @@ export default {
   price: {
     color: "#DC143C",
     fontWeight: "500",
-    fontSize: deviceWidth * 0.04
+    fontSize: deviceWidth * 0.04,
+    textAlign:'center',
+    marginLeft:5
   },
   publisher: {
     color: primary,
     fontWeight: "500",
-    fontSize: 12,
+    fontSize: deviceWidth * 0.04,
     // width:120,
-    marginRight:10
   },
   flexRow: {
     flexDirection: "row",
