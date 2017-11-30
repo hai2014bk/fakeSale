@@ -1114,7 +1114,7 @@ class Login extends Component {
             { justifyContent: "flex-start", alignItems: "center" }
           ]}
         >
-          <Text numberOfLines={2} style={[styles.boldText]}>
+          <Text numberOfLines={2} style={[styles.priceText]}>
             Lowest Regular Price:{" "}
           </Text>
           <Text style={styles.price}>
