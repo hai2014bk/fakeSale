@@ -87,7 +87,6 @@ export default {
     color: "#4C4CFF",
     textDecorationLine: "underline",
     fontSize: 15
-    // marginLeft: 5
   },
   alertText: {
     fontSize: 16,

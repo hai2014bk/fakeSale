@@ -522,7 +522,8 @@ class Login extends Component {
                 {
                   height: 30,
                   justifyContent: "flex-start",
-                  alignItems: "center"
+                  alignItems: "center",
+                  marginTop:10                  
                 }
               ]}
             >
@@ -1092,7 +1093,7 @@ class Login extends Component {
         >
           <Text style={styles.publisherText}>Publisher: </Text>
           <Text style={styles.publisher}>
-            {" "}{item.publisher}
+            {item.publisher.trim()}
           </Text>
         </View>
       );
@@ -1195,7 +1196,8 @@ class Login extends Component {
                   {
                     height: 30,
                     justifyContent: "flex-start",
-                    alignItems: "center"
+                    alignItems: "center",
+                    marginTop:10
                   }
                 ]}
               >
