@@ -86,9 +86,10 @@ export default {
   priceText:{
     color: "#696969",
     fontWeight: "500",
+
     fontSize: deviceWidth * 0.04,
     width: deviceWidth * 0.3,
-    textAlign:'right'
+    textAlign:'left'
   },
   detailLink: {
     color: "#4C4CFF",
@@ -111,7 +112,7 @@ export default {
     color: "#DC143C",
     fontWeight: "500",
     fontSize: deviceWidth * 0.04,
-    textAlign:'center',
+    textAlign:'left',
     marginLeft:5
   },
   publisher: {

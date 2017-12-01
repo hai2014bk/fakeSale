@@ -146,19 +146,19 @@ class Login extends Component {
       }
     }, 15000);
   }
-  uniqueArray(array){
-    var seens = []
-    console.log('asd12e12e',array)
-    for (item in array){
-      for (seenItem in seens){
-        if (item.id == seenItem.id){
-          array.splice(item,1)
+  uniqueArray(array) {
+    var seens = [];
+    console.log("asd12e12e", array);
+    for (item in array) {
+      for (seenItem in seens) {
+        if (item.id == seenItem.id) {
+          array.splice(item, 1);
         } else {
-          seens.push(item)
+          seens.push(item);
         }
       }
     }
-    return array
+    return array;
   }
   componentWillReceiveProps(props) {
     // console.log("props");
@@ -182,27 +182,27 @@ class Login extends Component {
       }
     }
     if (props.searchProduct.success) {
-          if (props.searchProduct.data.length < 10) {
-            console.log("aaaa", props.searchProduct.data.length);
-            products = products.concat(props.searchProduct.data);
-            console.log('poducqwcas',products)
-            var test = this.uniqueArray(products)
-            products = this.uniqueArray(products)            
-            this.setState({
-              products,
-              shouldLoadmore: false,
-              searchLoadMore: false
-            });
-          } else {
-            products = products.concat(props.searchProduct.data);
-            var test = this.uniqueArray(products)            
-            products = this.uniqueArray(products)
-            this.setState({
-              products,
-              shouldLoadmore: true,
-              searchLoadMore: false
-            });
-          }
+      if (props.searchProduct.data.length < 10) {
+        console.log("aaaa", props.searchProduct.data.length);
+        products = products.concat(props.searchProduct.data);
+        console.log("poducqwcas", products);
+        var test = this.uniqueArray(products);
+        products = this.uniqueArray(products);
+        this.setState({
+          products,
+          shouldLoadmore: false,
+          searchLoadMore: false
+        });
+      } else {
+        products = products.concat(props.searchProduct.data);
+        var test = this.uniqueArray(products);
+        products = this.uniqueArray(products);
+        this.setState({
+          products,
+          shouldLoadmore: true,
+          searchLoadMore: false
+        });
+      }
     }
     if (props.fetchCategory.success) {
       subCategory = props.fetchCategory.data;
@@ -523,7 +523,7 @@ class Login extends Component {
                   height: 30,
                   justifyContent: "flex-start",
                   alignItems: "center",
-                  marginTop:10                  
+                  marginTop: 10
                 }
               ]}
             >
@@ -1111,18 +1111,18 @@ class Login extends Component {
         <View
           style={[
             styles.flexRow,
-            { justifyContent: "flex-start", alignItems: "center", flex:1 }
+            { justifyContent: "flex-start", alignItems: "center", flex: 1 }
           ]}
         >
-        <View style={{flex:4}} >
-          <Text numberOfLines={2} style={[styles.boldText]}>
-            Lowest Regular Price:{" "}
-          </Text>
+          <View style={{ flex: 1 }}>
+            <Text numberOfLines={2} style={[styles.priceText]}>
+              Lowest Regular Price:{" "}
+            </Text>
           </View>
-          <View style={{flex:2}} >
-          <Text style={styles.price}>
-            {price}
-          </Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.price}>
+              {price}
+            </Text>
           </View>
         </View>
       );
@@ -1134,10 +1134,14 @@ class Login extends Component {
     if (item.sale_price !== 0) {
       return (
         <View style={styles.flexRow}>
-          <Text style={styles.boldText}>Sale Price: </Text>
-          <Text style={styles.price}>
-            ${this.priceHandle(item.sale_price)}
-          </Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.boldText}>Sale Price: </Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.price}>
+              ${this.priceHandle(item.sale_price)}
+            </Text>
+          </View>
         </View>
       );
     }
@@ -1201,7 +1205,7 @@ class Login extends Component {
                     height: 30,
                     justifyContent: "flex-start",
                     alignItems: "center",
-                    marginTop:10
+                    marginTop: 10
                   }
                 ]}
               >
