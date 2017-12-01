@@ -1111,15 +1111,19 @@ class Login extends Component {
         <View
           style={[
             styles.flexRow,
-            { justifyContent: "flex-start", alignItems: "center" }
+            { justifyContent: "flex-start", alignItems: "center", flex:1 }
           ]}
         >
+        <View style={{flex:4}} >
           <Text numberOfLines={2} style={[styles.boldText]}>
             Lowest Regular Price:{" "}
           </Text>
+          </View>
+          <View style={{flex:2}} >
           <Text style={styles.price}>
             {price}
           </Text>
+          </View>
         </View>
       );
     }

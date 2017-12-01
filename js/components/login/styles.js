@@ -76,7 +76,7 @@ export default {
     color: "#696969",
     fontWeight: "500",
     fontSize: deviceWidth * 0.04,
-    width: 100
+    // width: 100
   },
   publisherText: {
     color: "#696969",
